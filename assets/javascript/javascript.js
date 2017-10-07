@@ -1,0 +1,42 @@
+//initialize variables
+var firstName = "";
+var dob = "";
+var cocktail = "";
+var dobValidationMsg = "DOB is not in proper format!";
+
+
+//submit button click listener
+$("#startAssesment").on("click", function(){
+  //prevent page from refreshing
+  event.preventDefault();
+
+  //remove the p tag if it exists
+  $("#dob-validation-msg").remove();
+
+  //grab the dob provided by user
+  firstName = $("#name-input").val().trim();
+  dob = $("#birth-input").val().trim();
+  
+  console.log("firstName : " + firstName);
+  console.log("dob : " + dob);
+
+  //validate if first name was provided
+  if (firstName === "") {
+    var validation = $("<p>").attr("id", "firstName-validation-msg").text("Please provide your first name!");
+    
+    //display the validation message
+    $("#name-label").append(validation);
+  }
+  //validate if the dob is in the proper format, the front-end framework will return an empty string as the value if the improper format is provided
+  else if (dob === "") {
+    //create a new p tag and the validation message
+    var validation = $("<p>").attr("id", "dob-validation-msg").text(dobValidationMsg);
+    
+    //display the validation message  between the dob label and input text box
+    $("#dob-label").append(validation);
+  } 
+  //else if the user is < 21, they cannot use the app
+  else if (age < 21) {
+    var validation = $("<p>").attr("id", "dob-validation-msg").text("You are too young to be drinking cocktails " + firstName);
+  }
+});
