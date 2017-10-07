@@ -1,0 +1,16 @@
+body {
+	background-image: url(../images/cocktailbackground.jpg);
+	background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        height:100%;
+}
+
+.titleWall,
+.footerWall {
+	background-image: url(../images/black-wallpaper.jpg);
+	color: brown;
+}
