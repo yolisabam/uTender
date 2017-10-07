@@ -1,16 +1,45 @@
+.top {
+    background-color: black;
+    color: #F3CD7D;
+}
+
 body {
-	background-image: url(../images/cocktailbackground.jpg);
-	background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        height:100%;
+    background-image: url(../images/purplespace.jpg);
+    background-repeat: no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    /*background-position: center;*/
+    height: 100%;
+}
+
+div .about,
+.info {
+    background-color: black;
+    color: #F3CD7D;
+    opacity: 0.7;
+}
+
+.aboutHead {
+    padding-bottom: 10px;
+    font-size: 30px;
+    line-height: 49px;
+}
+
+.register {
+	padding-bottom: 5px;
+    font-size: 30px;
+    line-height: 49px;
+}
+
+.start {
+    background-color: black;
+    color: #F3CD7D;
 }
 
 .titleWall,
 .footerWall {
-	background-image: url(../images/black-wallpaper.jpg);
-	color: brown;
+    background-color: black;
+    color: #F3CD7D;
 }
