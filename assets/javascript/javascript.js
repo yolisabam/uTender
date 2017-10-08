@@ -3,6 +3,7 @@ var firstName = "";
 var dob = "";
 var cocktail = "";
 var dobValidationMsg = "DOB is not in proper format!";
+var age = 0;
 
 
 //submit button click listener
@@ -16,9 +17,12 @@ $("#startAssesment").on("click", function(){
   //grab the dob provided by user
   firstName = $("#name-input").val().trim();
   dob = $("#birth-input").val().trim();
+  dob = moment(dob).format("MM/DD/YYYY");
+  age = moment().diff(dob, "years");
   
   console.log("firstName : " + firstName);
   console.log("dob : " + dob);
+  console.log("age : " + age);
 
   //validate if first name was provided
   if (firstName === "") {
@@ -37,6 +41,15 @@ $("#startAssesment").on("click", function(){
   } 
   //else if the user is < 21, they cannot use the app
   else if (age < 21) {
-    var validation = $("<p>").attr("id", "dob-validation-msg").text("You are too young to be drinking cocktails " + firstName);
+    var validation = $("<p>").attr("id", "dob-validation-msg").text("You are too young to be drinking cocktails, " + firstName + "!");
+    
+    //display underage notification 
+    $("#dob-label").append(validation); 
+  } //else move on to next page 
+  else {
+    //empty out anything inside a row div
+    $(".panel").empty();
   }
+
+
 });
