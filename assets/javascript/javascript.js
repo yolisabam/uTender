@@ -87,7 +87,7 @@ $("#startAssesment").on("click", function(){
     //display zodiac image
     //$("#row2").empty();
     var img = $("<img>");
-    img.attr("src", getZodiacImageURL(zodiacSign)).attr("alt", zodiacSign + " thumbnail");
+    img.attr("src", getZodiacImageURL(zodiacSign)).attr("alt", zodiacSign + " thumbnail").attr("id", "img-zodiac");
 
     $("#col2-row2").append(img);
   
@@ -149,47 +149,75 @@ $("#startAssesment").on("click", function(){
     $("#row4").append(col1Div, col2Div, col3Div);
 
     //create the yesterday button
-    var bntYest = $("<button>");
-    bntYest.addClass("btn btn-default btn-day");
-    bntYest.attr("id", "btn-yest");
-    bntYest.attr("type", "submit");
-    bntYest.text("Yesterday");
+    var btnYest = $("<button>");
+    btnYest.addClass("btn btn-default btn-day");
+    btnYest.attr("id", "btn-yest");
+    btnYest.attr("type", "submit");
+    btnYest.attr("data-text", "yesterday");
+    btnYest.text("Yesterday");
 
     //append the yesterday button
-    $("#col-div-1").append(bntYest);
+    $("#col-div-1").append(btnYest);
 
     //create the today button
-    var bntToday = $("<button>");
-    bntToday.addClass("btn btn-default btn-day");
-    bntToday.attr("id", "btn-today");
-    bntToday.attr("type", "submit");
-    bntToday.text("Today");
+    var btnToday = $("<button>");
+    btnToday.addClass("btn btn-default btn-day");
+    btnToday.attr("id", "btn-today");
+    btnToday.attr("type", "submit");
+    btnToday.attr("data-text", "today");
+    btnToday.text("Today");
 
      //append the today button
-    $("#col-div-2").append(bntToday);
+    $("#col-div-2").append(btnToday);
 
     //create the tomorrow button
-    var bntTomorrow = $("<button>");
-    bntTomorrow.addClass("btn btn-default btn-day");
-    bntTomorrow.attr("id", "btn-tomorrow");
-    bntTomorrow.attr("type", "submit");
-    bntTomorrow.text("Tomorrow");
+    var btnTomorrow = $("<button>");
+    btnTomorrow.addClass("btn btn-default btn-day");
+    btnTomorrow.attr("id", "btn-tomorrow");
+    btnTomorrow.attr("type", "submit");
+    btnTomorrow.attr("data-text", "tomorrow");
+    btnTomorrow.text("Tomorrow");
 
     //append the tomorrow button
-    $("#col-div-3").append(bntTomorrow);
+    $("#col-div-3").append(btnTomorrow);
 
     //display random cocktail button
-    var bntRandom = $("<button>");
-    bntRandom.addClass("btn btn-default btn-get-random");
-    bntRandom.attr("id", "btn-random");
-    bntRandom.attr("type", "submit");
-    bntRandom.text("Get A Random Cocktail");
-
+    var btnRandom = $("<button>");
+    btnRandom.addClass("btn btn-default btn-get-random");
+    btnRandom.attr("id", "btn-random");
+    btnRandom.attr("type", "submit");
+    btnRandom.text("Get A Random Cocktail");
 
     // $("#row5").append($("<div class='col-xs-12' id='col-btn-random'>"));
-    $("#col2-row5").append(bntRandom);
+    $("#col2-row5").append(btnRandom);
 
   }
+
+  //listener for yesterday, today and tomorrow buttons
+  $(document).on("click", ".btn-day", function() {
+    //prevent page from refreshing
+    event.preventDefault();
+    day = $(this).attr("data-text");
+
+    //set the query url
+    var queryURL = "https://aztro.herokuapp.com?sign=" + zodiacSign + "&day=" + day;
+    //ajax get call
+    $.ajax({
+      method : "POST",
+      url : queryURL
+    }).done(function(response){
+      // console.log(response);
+      // console.log(response.description);
+      $("#date").text('Date : ' + response.current_date);
+      $("#color").text('Color : ' + response.color);
+      $("#compatibility").text('Compatibility : ' + response.compatibility);
+      $("#horoscope").text('Horoscope : ' + response.description);
+      $("#lucky-number").text('Lucky Number : ' + response.lucky_number);
+      $("#lucky-time").text('Lucky Time : ' + response.lucky_time);
+      $("#mood").text('Mood : ' + response.mood);
+    });
+    //console.log("I clicked : " + day);
+  });
 
   function getZodiacSign(date) {
     var mmdd = parseMMDD(date);
