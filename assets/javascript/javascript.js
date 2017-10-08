@@ -5,7 +5,6 @@ var age = 0;
 var cocktail = "";
 var zodiacSign = "";
 
-
 //submit button click listener
 $("#startAssesment").on("click", function(){
   //prevent page from refreshing
@@ -88,7 +87,7 @@ $("#startAssesment").on("click", function(){
     //display zodiac image
     //$("#row2").empty();
     var img = $("<img>");
-    img.attr("src", "http://via.placeholder.com/150x150").attr("alt", "zodiac sign thumbnail");
+    img.attr("src", getZodiacImageURL(zodiacSign)).attr("alt", zodiacSign + " thumbnail");
 
     $("#col2-row2").append(img);
   
@@ -151,7 +150,7 @@ $("#startAssesment").on("click", function(){
 
     //create the yesterday button
     var bntYest = $("<button>");
-    bntYest.addClass("btn btn-default start");
+    bntYest.addClass("btn btn-default btn-day");
     bntYest.attr("id", "btn-yest");
     bntYest.attr("type", "submit");
     bntYest.text("Yesterday");
@@ -161,7 +160,7 @@ $("#startAssesment").on("click", function(){
 
     //create the today button
     var bntToday = $("<button>");
-    bntToday.addClass("btn btn-default start");
+    bntToday.addClass("btn btn-default btn-day");
     bntToday.attr("id", "btn-today");
     bntToday.attr("type", "submit");
     bntToday.text("Today");
@@ -171,7 +170,7 @@ $("#startAssesment").on("click", function(){
 
     //create the tomorrow button
     var bntTomorrow = $("<button>");
-    bntTomorrow.addClass("btn btn-default start");
+    bntTomorrow.addClass("btn btn-default btn-day");
     bntTomorrow.attr("id", "btn-tomorrow");
     bntTomorrow.attr("type", "submit");
     bntTomorrow.text("Tomorrow");
@@ -181,7 +180,7 @@ $("#startAssesment").on("click", function(){
 
     //display random cocktail button
     var bntRandom = $("<button>");
-    bntRandom.addClass("btn btn-default start");
+    bntRandom.addClass("btn btn-default btn-get-random");
     bntRandom.attr("id", "btn-random");
     bntRandom.attr("type", "submit");
     bntRandom.text("Get A Random Cocktail");
@@ -234,5 +233,11 @@ $("#startAssesment").on("click", function(){
     return mm + dd;
   }
 
+function getZodiacImageURL(zodiac) {
+
+  var zodiacImageURL = "http://www.astrology-zodiac-signs.com/images/" + zodiac + "-w.png";
+ 
+  return zodiacImageURL;
+}
 
 });
