@@ -1,0 +1,63 @@
+.top {
+    background-color: black;
+    color: #F3CD7D;
+    font-family: 'Nosifer', cursive;
+}
+
+body {
+    background-image: url(../images/purplespace.jpg);
+    background-repeat: no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    /*background-position: center;*/
+    height: 100%;
+}
+
+div .about,
+.info {
+	background-image: url(../images/purple-gradient.png);
+	background-repeat: no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    /*background-position: center;*/
+    height: 100%;
+    background-color: grey;
+    color: /*#F3CD7D*/ white;
+    opacity: 0.8;
+    position: relative;
+    top: 10px;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.aboutHead {
+    padding-bottom: 10px;
+    font-size: 30px;
+    line-height: 49px;
+}
+
+.register {
+	padding-bottom: 5px;
+    font-size: 30px;
+    line-height: 49px;
+}
+
+.start {
+    background-color: purple;
+    color: /*#F3CD7D*/ white;
+}
+
+
+.footerWall {
+    background-color: black;
+    color: #F3CD7D;
+    font-family: 'Oswald', sans-serif;
+}
+
+/*#name-label,
+#dob-label{
+	font-family: 'Anton', sans-serif;
+}*/
