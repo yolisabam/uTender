@@ -25,7 +25,7 @@ div .about,
     background-size: cover;
     /*background-position: center;*/
     height: 100%;
-    background-color: grey;
+    
     color: /*#F3CD7D*/ white;
     opacity: 0.8;
     position: relative;
@@ -57,6 +57,16 @@ div .about,
     font-family: 'Oswald', sans-serif;
 }
 
+.scroll {
+	overflow: auto;
+	margin-bottom: 80px;
+	height: calc(100vh - 160px);
+	width: 100%;
+}
+
+body {
+	overflow: hidden;
+}
 /*#name-label,
 #dob-label{
 	font-family: 'Anton', sans-serif;
