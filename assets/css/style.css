@@ -1,9 +1,9 @@
 .top {
-    background-color: black;
+   /* background-color: grey;*/
+    padding-left: 30px;
     color: #F3CD7D;
     font-family: 'Nosifer', cursive;
 }
-
 body {
     background-image: url(../images/purple-gradient.png);
     background-repeat: no-repeat center center fixed;
@@ -15,31 +15,29 @@ body {
     height: 100%;
 }
 
-.col-md-5 {
-    width: 40%;
-    margin-right: 30px
+label {
+    font-family: 'Audiowide', cursive;
 }
 
-.col-md-7 {
-    width: 48%;
+.border {
+   /* width: none;*/
+    border: 1px white solid;
+    margin-left: 20px;
 }
-
 .form-control {
     color: white;
     background: none;
     border: solid 1px white 
 }
-
-
-.start {
-    background-color: transparent;
-    color: /*#F3CD7D*/ white;
+.panel {
+background-color: none;
+background: none;
+color: white;
 }
-
 div .about,
 .info {
-	/*background-image: url(../images/purple-gradient.png);*/
-	background-repeat: no-repeat center center fixed;
+/*  background-image: url(../images/purple-gradient.png)*/;
+    background-repeat: no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -48,61 +46,77 @@ div .about,
     height: 100%;
     background-color: none;
     color: /*#F3CD7D*/ white;
-    
+    /* opacity: 0.8; */
     position: relative;
     top: 10px;
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Audiowide', cursive;
 }
-
-.panel {
-background-color: none;
-background: none;
-color: white;
-
-}
-
-
-input {
-    border: white solid 1px;
-}
-
-.info-panel {
-    border: white 1px solid
-}
-
 .aboutHead {
     padding-bottom: 10px;
     font-size: 30px;
     line-height: 49px;
 }
-
 .register {
-	padding-bottom: 5px;
+    padding-bottom: 5px;
     font-size: 30px;
     line-height: 49px;
-    color: white;
+    font-family: 'Audiowide', cursive;
 }
-
 .start {
     background-color: transparent;
     color: /*#F3CD7D*/ white;
+    font-family: 'Audiowide', cursive;
+}
+.footerWall {
+    color: #FEE731;
+    font-family: 'Audiowide', cursive;
+}
+ .scroll {
+    overflow: auto;
+    margin-bottom: 80px;
+    height: calc(100vh - 160px);
+    width: 100%;
+} 
+input {
+    border: white solid 1px;
 }
 
-.col-xs-12 {
-    width: none;
-    border: 1px white solid;
-    margin-left: 35px;
+p{
+    color: white;
 }
 
-.row {
+#reviews {
+    padding-top: 20px;
+    padding-right: 20px;
+    display: inherit;
+}
+
+#col2-row3 p {
+    font-size: 25px;
+    /*font-family: 'Noto Sans', sans-serif;*/
+    font-family: 'Kalam', cursive;
+}
+
+
+.app-container {
     margin: 30px auto 0 auto;
     -webkit-animation-duration: 2s;
 }
 
+.btn-default {
+    color: white;
+    background-color: transparent;
+    border-color: white;
+    margin: 15px auto 0 auto;
+    display: inherit;
+    font-family: 'Audiowide', cursive;
+}
 
-
-
+h3, p {
+    font-family: 'Audiowide', cursive;
+    color: white;
+}
 /*#name-label,
 #dob-label{
-	font-family: 'Anton', sans-serif;
+    font-family: 'Anton', sans-serif;
 }*/
