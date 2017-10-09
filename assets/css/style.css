@@ -85,6 +85,16 @@ div .about,
     font-family: 'Oswald', sans-serif;
 }
 
+.scroll {
+	overflow: auto;
+	margin-bottom: 80px;
+	height: calc(100vh - 160px);
+	width: 100%;
+}
+
+body {
+	overflow: hidden;
+}
 input {
     border: white solid 1px;
 }
