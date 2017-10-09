@@ -1,5 +1,5 @@
 .top {
-    background-color: black;
+    padding-left: 35px;
     color: #F3CD7D;
     font-family: 'Nosifer', cursive;
 }
@@ -24,12 +24,16 @@ body {
     width: 48%;
 }*/
 
+.border {
+    border: 1px white solid;
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
 
-.col-xs-12 {
-   /* width: none;*/
+/*.col-xs-12 {
     border: 1px white solid;
     margin-left: 20px;
-}
+}*/
 
 .form-control {
     color: white;
@@ -80,7 +84,7 @@ div .about,
 
 
 .footerWall {
-    background-color: black;
+    /*background-color: black;*/
     color: #F3CD7D;
     font-family: 'Oswald', sans-serif;
 }
@@ -103,7 +107,9 @@ input {
     -webkit-animation-duration: 2s;
 }
 
-
+#img-zodiac {
+    background-color: transparent;
+}
 
 /*#name-label,
 #dob-label{
