@@ -12,6 +12,7 @@ $("#startAssesment").on("click", function(){
 
   //remove the p tag if it exists
   $("#dob-validation-msg").remove();
+  $("#firstName-validation-msg").remove();
 
   //grab the dob provided by user
   firstName = $("#name-input").val().trim();
