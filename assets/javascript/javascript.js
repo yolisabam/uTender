@@ -52,30 +52,29 @@ $("#startAssesment").on("click", function(){
     $(".row").empty();
 
     //create the grid
-    var col1 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
-    var col2 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-8").attr("id", "div-content");
-    var col3 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
+    var col1 = $("<div>").addClass("col-md-2");
+    var col2 = $("<div>").addClass("col-md-8").attr("id", "div-content");
+    var col3 = $("<div>").addClass("col-md-2");
 
-    var col2Row1 = $("<div>").addClass("row").attr("id", "row1");
-    var col2Row2 = $("<div>").addClass("row").attr("id", "row2");
-    var col2Row3 = $("<div>").addClass("row").attr("id", "row3");
-    var col2Row4 = $("<div>").addClass("row").attr("id", "row4");
-    var col2Row5 = $("<div>").addClass("row").attr("id", "row5");
-
-    col2Row1.append($("<div class='col-xs-12' id='col2-row1'>"));
-    col2Row2.append($("<div class='col-xs-12' id='col2-row2'>"));
-    col2Row3.append($("<div class='col-xs-12' id='col2-row3'>"));
-    //col2Row4.append($("<div class='col-xs-12' id='col2-row4'>"));
-    col2Row5.append($("<div class='col-xs-12' id='col2-row5'>"));
-
+    //append 3 cols inside the parent row
     $(".row").append(col1);
     $(".row").append(col2)
     $(".row").append(col3);
 
-    $("#div-content").append(col2Row1,col2Row2,col2Row3,col2Row4,col2Row5);
-    // $("#row1").append($("<div class='col-xs-3'>"));
-    // $("#row1").append($("<div class='col-xs-6'>")); 
-    // $("#row1").append($("<div class='col-xs-3'>"));
+    //create 2 rows inside col2
+    var col2Row0 = $("<div>").addClass("row").attr("id", "row0");
+    var col2Row1 = $("<div>").addClass("row").attr("id", "row1");
+    var col2Row2 = $("<div>").addClass("row").attr("id", "row2");
+
+    
+    //append the 2 rows inside div content
+    $("#div-content").append(col2Row0, col2Row1, col2Row2);
+
+    //grab row 1 of col 2 and add 2 cols inside,
+    col1 = $("<div>").addClass("col-md-6").attr('id','row1-col1');
+    col2 = $("<div>").addClass("col-md-6").attr('id','row1-col2');
+
+    $("#row1").append(col1, col2);
 
     //get the zodiac sign based on dob
     zodiacSign = getZodiacSign(dob);
@@ -83,14 +82,14 @@ $("#startAssesment").on("click", function(){
 
     //display zodiac sign
     //$("#row1").empty();
-    $("#col2-row1").append("<h3>Hello " + zodiacSign + "!</h3>");
+    $("#row0").append("<h3>Hello " + zodiacSign + "!</h3>");
 
     //display zodiac image
     //$("#row2").empty();
     var img = $("<img>");
     img.attr("src", getZodiacImageURL(zodiacSign)).attr("alt", zodiacSign + " thumbnail").attr("id", "img-zodiac");
 
-    $("#col2-row2").append(img);
+    $("#row1-col1").append(img);
   
     //display horoscope details  
     //create variables
@@ -111,7 +110,9 @@ $("#startAssesment").on("click", function(){
     var p7 = $("<p>").attr("id", "mood");
 
     //$("#row3").empty();
-    $("#col2-row3").append(p1, p2, p3, p4, p5, p6, p7);
+    //$("#col2-row3").append(p1, p2, p3, p4, p5, p6, p7);
+    $("#row1-col2").append(p1, p2, p3, p5, p6, p7);
+    $("#row2").append(p4);
 
     var day = "today";
     var queryURL = "https://aztro.herokuapp.com?sign=" + zodiacSign + "&day=" + day;
@@ -220,6 +221,63 @@ $("#startAssesment").on("click", function(){
     //console.log("I clicked : " + day);
   });
 
+  //listener for load cocktail selection button
+  //$(document).on("click", ".btn-cocktail-selection", function(){
+  $(document).on("click", "#btn-random", function(){  
+    //empty out the row to be replaced with new stuff
+    $(".row").empty();
+
+    //create the grid
+    var col1 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
+    var col2 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-8").attr("id", "div-content");
+    var col3 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
+
+    //create 4rows inside col2
+    col2.append($("<div class='row' id='col2-row1'></div"));
+    col2.append($("<div class='row' id='col2-row2'></div"));
+    col2.append($("<div class='row' id='col2-row3'></div"));
+    col2.append($("<div class='row' id='col2-row4'></div"))
+
+    $(".row").append(col1, col2, col3);
+
+    //ajax get request to get a list of all cocktails
+    queryURL = "http://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail";
+
+    $.ajax({
+      method : "GET",
+      url : queryURL
+    }).done(function(response) {
+      var length = response.drinks.length;
+
+      // console.log(response);
+      // console.log(response.length);
+      // console.log(response.drinks[0].strDrinkThumb);
+      
+      var cocktail = "";
+      var cocktailImageURL = "";
+
+      for (var i = 0; i < 16; i++) {
+        //get a random 16 cocktails
+        var index = Math.floor(Math.random * (length));
+        console.log("imageURL " + i + " :" + response.drinks[i].strDrinkThumb);
+        cocktail = response.drinks[i].strDrink;
+        cocktailImageURL = response.drinks[i].strDrinkThumb;
+
+        //create a new column
+        var col = $("<div class='col-md-3'></div>");
+
+        //append the column in the appropriate row
+
+        var img = $("<img>");
+        img.attr("src", cocktailImageURL);
+        img.attr("alt", cocktail);
+        img.addClass("img-cocktail-thumbnail");
+       $("#div-content").append(img);
+      }
+    });
+
+  });
+
   function getZodiacSign(date) {
     var mmdd = parseMMDD(date);
     mmdd = parseInt(mmdd);
@@ -244,16 +302,18 @@ $("#startAssesment").on("click", function(){
       return "Scorpio";
     } else if (mmdd >= 1122 && mmdd <= 1221) {
       return "Sagittarius";
-    } else if (mmdd >= 1222 && mmdd <= 119) {
+    } else if ( (mmdd >= 1222 && mmdd <= 1231) || (mmdd >= 101 && mmdd <= 119)) {
       return "Capricorn";
-    } else if (mmdd >= 120 && mmdd <= 118) {
+    } else if (mmdd >= 120 && mmdd <= 218) {
       return "Aquarius";
-    } else if (mmdd >= 119 && mmdd <= 320) {
+    } else if (mmdd >= 219 && mmdd <= 320) {
       return "Pisces";
     } else {
       return 'error!';
     }
   }
+
+
 
   function parseMMDD(date) {
     var mm = date.split("-")[1];
