@@ -5,7 +5,7 @@
 }
 
 body {
-    background-image: url(../images/purplespace.jpg);
+    background-image: url(../images/purple-gradient.png);
     background-repeat: no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -15,9 +15,37 @@ body {
     height: 100%;
 }
 
+.col-md-5 {
+    width: 40%;
+    margin-right: 30px
+}
+
+.col-md-7 {
+    width: 48%;
+}
+
+.form-control {
+    color: white;
+    background: none;
+    border: solid 1px white 
+}
+
+.col-xs-12 {
+    width: none;
+    border: 1px white solid;
+    margin-left: 35px;
+}
+
+.panel {
+background-color: none;
+background: none;
+color: white;
+
+}
+
 div .about,
 .info {
-	background-image: url(../images/purple-gradient.png);
+/*	background-image: url(../images/purple-gradient.png)*/;
 	background-repeat: no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -25,7 +53,7 @@ div .about,
     background-size: cover;
     /*background-position: center;*/
     height: 100%;
-    background-color: grey;
+    background-color: none;
     color: /*#F3CD7D*/ white;
     opacity: 0.8;
     position: relative;
@@ -46,7 +74,7 @@ div .about,
 }
 
 .start {
-    background-color: purple;
+    background-color: transparent;
     color: /*#F3CD7D*/ white;
 }
 
@@ -56,6 +84,28 @@ div .about,
     color: #F3CD7D;
     font-family: 'Oswald', sans-serif;
 }
+
+.scroll {
+	overflow: auto;
+	margin-bottom: 80px;
+	height: calc(100vh - 160px);
+	width: 100%;
+}
+
+body {
+	overflow: hidden;
+}
+input {
+    border: white solid 1px;
+}
+
+
+.row {
+    margin: 30px auto 0 auto;
+    -webkit-animation-duration: 2s;
+}
+
+
 
 /*#name-label,
 #dob-label{
