@@ -65,10 +65,12 @@ $("#startAssesment").on("click", function(){
     var col2Row0 = $("<div>").addClass("row").attr("id", "row0");
     var col2Row1 = $("<div>").addClass("row").attr("id", "row1");
     var col2Row2 = $("<div>").addClass("row").attr("id", "row2");
+    var col2Row3 = $("<div>").addClass("row").attr("id", "row3");
+    var col2Row4 = $("<div>").addClass("row").attr("id", "row4");
 
     
     //append the 2 rows inside div content
-    $("#div-content").append(col2Row0, col2Row1, col2Row2);
+    $("#div-content").append(col2Row0, col2Row1, col2Row2, col2Row3, col2Row4);
 
     //grab row 1 of col 2 and add 2 cols inside,
     col1 = $("<div>").addClass("col-md-6").attr('id','row1-col1');
@@ -159,7 +161,7 @@ $("#startAssesment").on("click", function(){
     btnYest.text("Yesterday");
 
     //append the yesterday button
-    $("#col-div-1").append(btnYest);
+    $("#row3").append(btnYest);
 
     //create the today button
     var btnToday = $("<button>");
@@ -170,7 +172,7 @@ $("#startAssesment").on("click", function(){
     btnToday.text("Today");
 
      //append the today button
-    $("#col-div-2").append(btnToday);
+    $("#row3").append(btnToday);
 
     //create the tomorrow button
     var btnTomorrow = $("<button>");
@@ -181,7 +183,7 @@ $("#startAssesment").on("click", function(){
     btnTomorrow.text("Tomorrow");
 
     //append the tomorrow button
-    $("#col-div-3").append(btnTomorrow);
+    $("#row3").append(btnTomorrow);
 
     //display random cocktail button
     var btnRandom = $("<button>");
@@ -191,7 +193,7 @@ $("#startAssesment").on("click", function(){
     btnRandom.text("Get A Random Cocktail");
 
     // $("#row5").append($("<div class='col-xs-12' id='col-btn-random'>"));
-    $("#col2-row5").append(btnRandom);
+    $("#row4").append(btnRandom);
 
   }
 
