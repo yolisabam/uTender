@@ -246,9 +246,9 @@ $("#startAssesment").on("click", function(){
       return "Sagittarius";
     } else if (mmdd >= 1222 && mmdd <= 119) {
       return "Capricorn";
-    } else if (mmdd >= 120 && mmdd <= 118) {
+    } else if (mmdd >= 120 && mmdd <= 218) {
       return "Aquarius";
-    } else if (mmdd >= 119 && mmdd <= 320) {
+    } else if (mmdd >= 219 && mmdd <= 320) {
       return "Pisces";
     } else {
       return 'error!';
