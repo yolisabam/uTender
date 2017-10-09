@@ -1,0 +1,108 @@
+.top {
+    background-color: black;
+    color: #F3CD7D;
+    font-family: 'Nosifer', cursive;
+}
+
+body {
+    background-image: url(../images/purple-gradient.png);
+    background-repeat: no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    /*background-position: center;*/
+    height: 100%;
+}
+
+.col-md-5 {
+    width: 40%;
+    margin-right: 30px
+}
+
+.col-md-7 {
+    width: 48%;
+}
+
+.form-control {
+    color: white;
+    background: none;
+    border: solid 1px white 
+}
+
+
+.start {
+    background-color: transparent;
+    color: /*#F3CD7D*/ white;
+}
+
+div .about,
+.info {
+	/*background-image: url(../images/purple-gradient.png);*/
+	background-repeat: no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    /*background-position: center;*/
+    height: 100%;
+    background-color: none;
+    color: /*#F3CD7D*/ white;
+    
+    position: relative;
+    top: 10px;
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.panel {
+background-color: none;
+background: none;
+color: white;
+
+}
+
+
+input {
+    border: white solid 1px;
+}
+
+.info-panel {
+    border: white 1px solid
+}
+
+.aboutHead {
+    padding-bottom: 10px;
+    font-size: 30px;
+    line-height: 49px;
+}
+
+.register {
+	padding-bottom: 5px;
+    font-size: 30px;
+    line-height: 49px;
+    color: white;
+}
+
+.start {
+    background-color: transparent;
+    color: /*#F3CD7D*/ white;
+}
+
+.col-xs-12 {
+    width: none;
+    border: 1px white solid;
+    margin-left: 35px;
+}
+
+.row {
+    margin: 30px auto 0 auto;
+    -webkit-animation-duration: 2s;
+}
+
+
+
+
+/*#name-label,
+#dob-label{
+	font-family: 'Anton', sans-serif;
+}*/
