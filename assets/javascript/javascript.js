@@ -637,14 +637,47 @@ $(document).on("click","#drink-history", function() {
     //console.log("snapshot : " + snapshot);
     //console.log(snapshot.val());
 
-    var tableRow2 = $("<tr>");   
+    var tableRow2 = ""; //$("<tr>");   
     var tableData1= "";
     var tableData2 = "";
     var tableData3 = "";
     var tableData4 = "";
 
-    var snapshot = database.ref("users").child();
-    console.log(snapshot)
+    database.ref('users/' + firstName + "/").on("value", function(snapshot) {
+      var data = snapshot.val();
+      // console.log("this is the snapshot : " + data.val());
+
+      // data.forEach(function(childSnapshot) {
+      //   console.log('date is : ' + childSnapshot.val().date);
+      //   console.log('cocktail is : ' + childSnapshot.val().cocktail);
+      // })
+      //console.log('snapshot is : ' + snapshot.val());
+      console.log(snapshot.val());
+      //console.log(data);
+
+      for (var key in data) {
+        tableRow2 = $("<tr>");
+
+        //console.log(key);
+        //console.log(data[key].date);
+        //console.log(data[key].cocktail);
+
+        tableData1 = $("<td>").addClass("table-data").text(firstName);
+        tableData2 = $("<td>").addClass("table-data").text(data[key].date);
+        tableData3 = $("<td>").addClass("table-data").text(data[key].cocktail);
+        tableData4 = $("<td>").addClass("table-data").text(data[key].rating);
+
+        tableRow2.append(tableData1, tableData2, tableData3, tableData4);
+        table.append(tableRow2);
+      }
+
+      
+
+
+    });
+
+
+    // console.log(snapshot);
 
     // snapshot.forEach(function(childSnapshot) {
     //   console.log("childSnapshot : " + childSnapshot);
@@ -654,10 +687,10 @@ $(document).on("click","#drink-history", function() {
     //   tableData3 = $("<td>").addClass("table-data").text(childSnapshot.cocktail);
     //   tableData4 = $("<td>").addClass("table-data").text(childSnapshot.rating);
     //   tableRow2.append(tableData1, tableData2, tableData3, tableData4);
-    // });
+    });
 
     
     // table.append(tableRow2);
 
-  });
+  //});
 // });
