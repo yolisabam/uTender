@@ -36,11 +36,6 @@ $("#startAssesment").on("click", function(){
   dob = $("#birth-input").val().trim();
   dobMoment = moment({month : parseInt(dob.split("-")[1] - 1), day : parseInt(dob.split("-")[2]), year : parseInt(dob.split("-")[0])}).format("MM DD YYYY");
   age = moment().diff(dobMoment, "years");
-  
-  // console.log("firstName : " + firstName);
-  // console.log("dob : " + dob);
-  // console.log("dob moment: " + dobMoment);
-  // console.log("age : " + age);
 
   //validate if first name was provided
   if (firstName === "") {
@@ -97,14 +92,11 @@ $("#startAssesment").on("click", function(){
 
     //get the zodiac sign based on dob
     zodiacSign = getZodiacSign(dob);
-    //console.log(zodiacSign);
 
     //display zodiac sign
-    //$("#row1").empty();
     $("#row0").append("<h3>Hello " + zodiacSign + "!</h3>");
 
     //display zodiac image
-    //$("#row2").empty();
     var img = $("<img>");
     img.attr("src", getZodiacImageURL(zodiacSign)).attr("alt", zodiacSign + " thumbnail").attr("id", "img-zodiac");
 
@@ -128,8 +120,6 @@ $("#startAssesment").on("click", function(){
     var p6 = $("<p>").attr("id", "lucky-time");
     var p7 = $("<p>").attr("id", "mood");
 
-    //$("#row3").empty();
-    //$("#col2-row3").append(p1, p2, p3, p4, p5, p6, p7);
     $("#row1-col2").append(p1, p2, p3, p5, p6, p7);
     $("#row2").append(p4);
 
@@ -141,8 +131,7 @@ $("#startAssesment").on("click", function(){
       url : queryURL
     }).done(function(response){
       date = response.current_date;
-      // console.log(response);
-      // console.log(response.description);
+
       $("#date").text('Date : ' + response.current_date);
       $("#color").text('Color : ' + response.color);
       $("#compatibility").text('Compatibility : ' + response.compatibility);
@@ -167,7 +156,6 @@ $("#startAssesment").on("click", function(){
     col3Div.addClass("col-xs-4");
     col3Div.attr("id", "col-div-3");
 
-    //$("#row4").empty();
     $("#row4").append(col1Div, col2Div, col3Div);
 
     //create the yesterday button
@@ -210,9 +198,7 @@ $("#startAssesment").on("click", function(){
     btnRandom.attr("type", "submit");
     btnRandom.text("Get A Random Cocktail");
 
-    // $("#row5").append($("<div class='col-xs-12' id='col-btn-random'>"));
     $("#row4").append(btnRandom);
-
   }
 
   //listener for yesterday, today and tomorrow buttons
@@ -228,8 +214,6 @@ $("#startAssesment").on("click", function(){
       method : "POST",
       url : queryURL
     }).done(function(response){
-      //console.log(response);
-      // console.log(response.description);
       $("#date").text('Date : ' + response.current_date);
       $("#color").text('Color : ' + response.color);
       $("#compatibility").text('Compatibility : ' + response.compatibility);
@@ -238,14 +222,11 @@ $("#startAssesment").on("click", function(){
       $("#lucky-time").text('Lucky Time : ' + response.lucky_time);
       $("#mood").text('Mood : ' + response.mood);
     });
-    //console.log("I clicked : " + day);
   });
 
   function getZodiacSign(date) {
     var mmdd = parseMMDD(date);
     mmdd = parseInt(mmdd);
-
-    //console.log(mmdd);
 
     if (mmdd >= 321 && mmdd <= 419) {
       return "Aries";
@@ -294,43 +275,26 @@ function getZodiacImageURL(zodiac) {
 
 
 $(document).on("click", ".btn-get-random",function(){
-
   $(".row").empty();  
   callAjaxForCocktail(randomCockTailDBURL);
-  //renderElementsForRandomCoctail();
 });
 
 $(document).on("click","#another-random-cocktail",function(){
-
   $(".row").empty();  
   callAjaxForCocktail(randomCockTailDBURL);
-
 });
 
 
 function callAjaxForCocktail(queryURL){
-
   $.ajax({
-
   method:"GET",
-
   url:queryURL
-
   }).done(function(response){
-
-  console.log('response : ' + response);
-  console.log('response object : ' + response.drinks[0]);
-
-  console.log('cocktail from response : ' + response.drinks[0].strDrink);
-
-  renderElementsForRandomCoctail(response);
-
-  //console.log(response.drinks[0].strDrinkThumb);
+    renderElementsForRandomCoctail(response);
   });
 }
 
 function renderElementsForRandomCoctail(response){
-
     var divContainer = $("<div>");
 
     //grab the random coctail selected
@@ -393,13 +357,8 @@ function renderElementsForRandomCoctail(response){
     //create a list for the ingredients
     var ul = $("<ul>");
 
-    //
     var paragraphTag3 = $("<p>");
     var paragraphTag4 = $("<p>");
-
-
-    //paragraphTag1.addClass("text-center");
-    //paragraphTag2.addClass("text-center");
 
     ul.addClass("text-center");
     paragraphTag3.addClass("text-center");
@@ -413,22 +372,14 @@ function renderElementsForRandomCoctail(response){
       var ingredientNumber = "strIngredient" + i;
       var measureNumber = "strMeasure" + i;
 
-      //console.log("ingredientNumber : " + ingredientNumber);
-      //console.log("measureNumber : " + measureNumber);
-
       var ingredient = response.drinks[0][ingredientNumber];
       var measurement = response.drinks[0][measureNumber];
-
-      //console.log("ingredient : " + ingredient);
-      //console.log("measurement : " + measurement);
 
       if (response.drinks[0][ingredientNumber]) {// !== "" || response.drinks[0][ingredientNumber] !== null || response.drinks[0][ingredientNumber] !== "null") {
         ul.append($("<li>" + measurement + " " + ingredient + "</li>"))
       }
     }
 
-    //paragraphTag1.text("Main Ingredients : " + response.drinks[0].strIngredient1 + " , " + response.drinks[0].strIngredient2 + " and " + response.drinks[0].strIngredient3);
-    //paragraphTag2.text("take " + response.drinks[0].strMeasure1 + " " + response.drinks[0].strIngredient1 + " , " +response.drinks[0].strMeasure2 + " " + response.drinks[0].strIngredient2 + " and " + response.drinks[0].strMeasure3 + " " + response.drinks[0].strIngredient3 + ".");
     paragraphTag3.text("Mixing Instructions:");
     paragraphTag4.text(response.drinks[0].strInstructions);
 
@@ -436,9 +387,6 @@ function renderElementsForRandomCoctail(response){
     anotherRandomCocktail.addClass("btn btn-default btn-random-cocktail");
     anotherRandomCocktail.attr("id", "another-random-cocktail");
     anotherRandomCocktail.attr("type", "submit");
-
-    // anotherRandomCocktail.attr("data-text", "generate another coctail for you?");
-    // anotherRandomCocktail.text("generate another coctail for you?");
     anotherRandomCocktail.attr("data-text", "Lets generate another random drink");
     anotherRandomCocktail.text("Lets generate another random drink");  
 
@@ -446,9 +394,6 @@ function renderElementsForRandomCoctail(response){
     cocktailDataBase.addClass("btn btn-default btn-cocktail-database");
     cocktailDataBase.attr("id", "cocktail-database");
     cocktailDataBase.attr("type", "submit");
-
-    // cocktailDataBase.attr("data-text", "Check out the drinks that suits you");
-    // cocktailDataBase.text("Check out the drinks that suits you");
     cocktailDataBase.attr("data-text", "Or pick from random 15");
     cocktailDataBase.text("Or pick from random 15");
 
@@ -474,9 +419,6 @@ function renderElementsForRandomCoctail(response){
 
     //add the ingredients list
     cocktailNameDiv.append(ul);
-
-    //cocktailNameDiv.append(paragraphTag1);
-    //cocktailNameDiv.append(paragraphTag2);
     cocktailNameDiv.append(paragraphTag3);
     cocktailNameDiv.append(paragraphTag4)
     
@@ -503,14 +445,11 @@ function renderElementsForRandomCoctail(response){
     //append the cocktail image into the new row
     divRow.append(divImage);
 
-    //divContainer.append(divRow);
-
     //remove the row to be replaced by new stuff
     $(".row").remove();
 
     //add the new stuff
     $(".app-container").append(divRow);
-    //$(".row").append(divContainer);
 }
 
 //listener for load 15 random cocktails button
@@ -539,19 +478,11 @@ $(document).on("click", "#cocktail-database", function(){
     url : queryURL
   }).done(function(response) {
     var length = response.drinks.length;
-
-    // console.log(response);
-    // console.log(response.length);
-    // console.log(response.drinks[0].strDrinkThumb);
-    
-    //var cocktail = "";
     var cocktailImageURL = "";
 
     for (var i = 0; i < 15; i++) {
-      //get a random 16 cocktails
+      //get a random 15 cocktails
       var index = Math.floor(Math.random() * (length));
-      //console.log("index : " + index)
-      //console.log("imageURL " + index + " :" + response.drinks[index].strDrinkThumb);
       cocktail = response.drinks[index].strDrink;
       cocktailImageURL = response.drinks[index].strDrinkThumb;
       
@@ -572,10 +503,8 @@ $(document).on("click", "#cocktail-database", function(){
 
 //add event listener to clicking of cocktail thumbnail
 $(document).on("click", ".img-cocktail-thumbnail", function() {
-  //var cocktail = $(this).attr("alt");
-  console.log("this is : " + $(this));
+  
   cocktail = $(this).attr("alt");
-
   cocktailDBURL = cocktailDBURL + cocktail;
 
   callAjaxForCocktail(cocktailDBURL);
@@ -600,7 +529,7 @@ $(document).on("click","#drink-history", function() {
 
   //create a new row and column
   var row = $("<div>").addClass("row").attr("id", "row-view-history");
-  var col = $("<div>").addClass("col-sm-12 col-drink-history").attr("id", "drink-history");
+  var col = $("<div>").addClass("col-sm-12 col-drink-history").attr("id", "col-drink-history");
 
   //create a panel
   var panel = $("<div>").addClass("panel-about");
@@ -620,13 +549,10 @@ $(document).on("click","#drink-history", function() {
   var tableHead1 = $("<th>").addClass("table-head").text("Date");
   var tableHead2 = $("<th>").addClass("table-head").text("Cocktail");
   var tableHead3 = $("<th>").addClass("table-head").text("Rating");
-  
-  
 
   //put the table structure together
   tableRow1.append(tableHead1, tableHead2, tableHead3);
   table.append(tableRow1);
-  //table.append(tableRow12);
 
   //append table inside panel body
   panelBody.append(table);
@@ -634,38 +560,18 @@ $(document).on("click","#drink-history", function() {
   //finally append eveything inside the container
   $(".app-container").append(row);
 
-//display user's cocktail consumption history
-// database.ref("users/" + firstName).on("value", function(snapshot) {
-  //var sv = snapshot.val();
-  //console.log("snapshot : " + snapshot);
-  //console.log(snapshot.val());
-
+  //display user's cocktail consumption history
   var tableRow2 = ""; //$("<tr>");   
   var tableData1= "";
   var tableData2 = "";
   var tableData3 = "";
-  //var tableData4 = "";
 
   database.ref('users/' + firstName + "/").on("value", function(snapshot) {
     var data = snapshot.val();
-    // console.log("this is the snapshot : " + data.val());
-
-    // data.forEach(function(childSnapshot) {
-    //   console.log('date is : ' + childSnapshot.val().date);
-    //   console.log('cocktail is : ' + childSnapshot.val().cocktail);
-    // })
-    //console.log('snapshot is : ' + snapshot.val());
-    console.log(snapshot.val());
-    //console.log(data);
 
     for (var key in data) {
       tableRow2 = $("<tr>");
 
-      //console.log(key);
-      //console.log(data[key].date);
-      //console.log(data[key].cocktail);
-
-      //tableData1 = $("<td>").addClass("table-data").text(firstName);
       tableData1 = $("<td>").addClass("table-data table-data-date").attr("id","id-td-date").text(data[key].date);
       tableData2 = $("<td>").addClass("table-data table-data-cocktail").attr("id","td-cocktail-name").text(data[key].cocktail);
       tableData3 = $("<td>").addClass("table-data table-data-rating").attr("id","id.rating").text(data[key].rating);
@@ -681,8 +587,14 @@ function getfirstNameCap(firstName) {
   return firstName.split('')[0].toUpperCase() + firstName.split('').slice(1, firstName.length).join('').toLowerCase();
 }
 
-    
-    // table.append(tableRow2);
+$(document).on("click", "#td-cocktail-name", function(){
+  cocktail = $(this).text();
+  //console.log(cocktailName);
 
-  //});
-// });
+  cocktailDBURL = cocktailDBURL + cocktail;
+
+  callAjaxForCocktail(cocktailDBURL);
+});
+
+    
+   
