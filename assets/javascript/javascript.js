@@ -221,69 +221,6 @@ $("#startAssesment").on("click", function(){
     //console.log("I clicked : " + day);
   });
 
-<<<<<<< HEAD
-  //listener for load cocktail selection button
-  //$(document).on("click", ".btn-cocktail-selection", function(){
-  $(document).on("click", "#btn-random", function(){  
-    //empty out the row to be replaced with new stuff
-    $(".row").empty();
-
-    //create the grid
-    var col1 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
-    var col2 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-8").attr("id", "div-content");
-    var col3 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
-
-    //create 4rows inside col2
-    col2.append($("<div class='row' id='col2-row1'></div"));
-    col2.append($("<div class='row' id='col2-row2'></div"));
-    col2.append($("<div class='row' id='col2-row3'></div"));
-    col2.append($("<div class='row' id='col2-row4'></div"))
-
-    $(".row").append(col1, col2, col3);
-
-    //ajax get request to get a list of all cocktails
-    queryURL = "http://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail";
-
-    $.ajax({
-      method : "GET",
-      url : queryURL
-    }).done(function(response) {
-      var length = response.drinks.length;
-
-      // console.log(response);
-      // console.log(response.length);
-      // console.log(response.drinks[0].strDrinkThumb);
-      
-      var cocktail = "";
-      var cocktailImageURL = "";
-
-      for (var i = 0; i < 16; i++) {
-        //get a random 16 cocktails
-        var index = Math.floor(Math.random * (length));
-        console.log("imageURL " + i + " :" + response.drinks[i].strDrinkThumb);
-        cocktail = response.drinks[i].strDrink;
-        cocktailImageURL = response.drinks[i].strDrinkThumb;
-
-        //create a new column
-        if (i === 0 || i === 4 || i === 8 || i === 12) {
-          var col = $("<div class='col-md-3'></div>");  
-        }
-        
-
-        //append the column in the appropriate row
-
-        var img = $("<img>");
-        img.attr("src", cocktailImageURL);
-        img.attr("alt", cocktail);
-        img.addClass("img-cocktail-thumbnail");
-       $("#div-content").append(img);
-      }
-    });
-
-  });
-
-=======
->>>>>>> master
   function getZodiacSign(date) {
     var mmdd = parseMMDD(date);
     mmdd = parseInt(mmdd);
@@ -504,4 +441,3 @@ function renderElementsForRandomCoctail(response){
 
 
 }
-
