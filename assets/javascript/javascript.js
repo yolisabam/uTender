@@ -224,61 +224,6 @@ $("#startAssesment").on("click", function(){
     //console.log("I clicked : " + day);
   });
 
-  //listener for load cocktail selection button
-  //$(document).on("click", ".btn-cocktail-selection", function(){
-  $(document).on("click", "#cocktail-database", function(){  
-    //empty out the row to be replaced with new stuff
-    $(".row").empty();
-
-    //create the grid
-    var col1 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
-    var col2 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-8").attr("id", "div-content");
-    var col3 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
-
-    //create 4rows inside col2
-    col2.append($("<div class='row' id='col2-row1'></div"));
-    col2.append($("<div class='row' id='col2-row2'></div"));
-    col2.append($("<div class='row' id='col2-row3'></div"));
-    col2.append($("<div class='row' id='col2-row4'></div"))
-
-    $(".row").append(col1, col2, col3);
-
-    //ajax get request to get a list of all cocktails
-    queryURL = "http://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail";
-
-    $.ajax({
-      method : "GET",
-      url : queryURL
-    }).done(function(response) {
-      var length = response.drinks.length;
-
-      // console.log(response);
-      // console.log(response.length);
-      // console.log(response.drinks[0].strDrinkThumb);
-      
-      var cocktail = "";
-      var cocktailImageURL = "";
-
-      for (var i = 0; i < 15; i++) {
-        //get a random 16 cocktails
-        var index = Math.floor(Math.random * (length));
-        console.log("imageURL " + i + " :" + response.drinks[i].strDrinkThumb);
-        cocktail = response.drinks[i].strDrink;
-        cocktailImageURL = response.drinks[i].strDrinkThumb;
-        
-
-        //append the column in the appropriate row
-
-        var img = $("<img>");
-        img.attr("src", cocktailImageURL);
-        img.attr("alt", cocktail);
-        img.addClass("img-cocktail-thumbnail");
-       $("#div-content").append(img);
-      }
-    });
-
-  });
-
   function getZodiacSign(date) {
     var mmdd = parseMMDD(date);
     mmdd = parseInt(mmdd);
@@ -334,35 +279,35 @@ function getZodiacImageURL(zodiac) {
 $(document).on("click", ".btn-get-random",function(){
 
   $(".row").empty();  
-  callAjaxForCocktail();
+  callAjaxForCocktail(cockTailDBURL);
   //renderElementsForRandomCoctail();
 });
 
 $(document).on("click",".btn-day1",function(){
 
   $(".row").empty();  
-  callAjaxForCocktail();
+  callAjaxForCocktail(cockTailDBURL);
 
 });
 
 
-function callAjaxForCocktail(){
+function callAjaxForCocktail(queryURL){
 
   $.ajax({
 
   method:"GET",
 
-  url:cockTailDBURL
+  url:queryURL
 
   }).done(function(response){
 
-  console.log(response);
+  //console.log(response);
 
-  console.log(response.drinks[0].strDrink);
+  //console.log(response.drinks[0].strDrink);
 
   renderElementsForRandomCoctail(response);
 
-  console.log(response.drinks[0].strDrinkThumb);
+  //console.log(response.drinks[0].strDrinkThumb);
   });
 }
 
@@ -458,7 +403,7 @@ function renderElementsForRandomCoctail(response){
       console.log("ingredient : " + ingredient);
       console.log("measurement : " + measurement);
 
-      if (response.drinks[0][ingredientNumber] !== "") {
+      if (response.drinks[0][ingredientNumber] !== "" || response.drinks[0][ingredientNumber] !== null || response.drinks[0][ingredientNumber] !== "null") {
         ul.append($("<li>" + measurement + " " + ingredient + "</li>"))
       }
     }
@@ -490,7 +435,7 @@ function renderElementsForRandomCoctail(response){
 
     var addToFireBase = $("<button>");
     addToFireBase.addClass("btn btn-default btn-day3");
-    addToFireBase.attr("id", "cocktail-database");
+    addToFireBase.attr("id", "cocktail-firebase");
     addToFireBase.attr("type", "submit");
     addToFireBase.attr("data-text", "Awesome! I will make this drink");
     addToFireBase.text("Awesome! I will make this drink");
@@ -532,7 +477,70 @@ function renderElementsForRandomCoctail(response){
     //add the new stuff
     $(".app-container").append(divRow);
     //$(".row").append(divContainer);
-
-
-
 }
+
+//listener for load 15 random cocktails button
+$(document).on("click", "#cocktail-database", function(){  
+  //empty out the row to be replaced with new stuff
+  $(".row").empty();
+
+  //create the grid
+  var col1 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
+  var col2 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-8").attr("id", "div-content");
+  var col3 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
+
+  //create 4rows inside col2
+  col2.append($("<div class='row' id='col2-row1'></div"));
+  col2.append($("<div class='row' id='col2-row2'></div"));
+  col2.append($("<div class='row' id='col2-row3'></div"));
+  col2.append($("<div class='row' id='col2-row4'></div"))
+
+  $(".row").append(col1, col2, col3);
+
+  //ajax get request to get a list of all cocktails
+  queryURL = "http://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail";
+
+  $.ajax({
+    method : "GET",
+    url : queryURL
+  }).done(function(response) {
+    var length = response.drinks.length;
+
+    // console.log(response);
+    // console.log(response.length);
+    // console.log(response.drinks[0].strDrinkThumb);
+    
+    var cocktail = "";
+    var cocktailImageURL = "";
+
+    for (var i = 0; i < 15; i++) {
+      //get a random 16 cocktails
+      var index = Math.floor(Math.random() * (length));
+      //console.log("index : " + index)
+      //console.log("imageURL " + index + " :" + response.drinks[index].strDrinkThumb);
+      cocktail = response.drinks[index].strDrink;
+      cocktailImageURL = response.drinks[index].strDrinkThumb;
+      
+      var div = $("<div>").addClass("div-random-15");
+      var p = $("<p>").addClass("p-random-15").text(cocktail);
+      var img = $("<img>");
+      img.attr("src", cocktailImageURL);
+      img.attr("alt", cocktail);
+      img.addClass("img-cocktail-thumbnail");
+
+      div.append(p, img);
+
+     $("#div-content").append(div);
+    }
+  });
+
+});
+
+//add event listener to clicking of cocktail thumbnail
+$(document).on("click", ".img-cocktail-thumbnail", function() {
+  var cocktail = $(this).attr("alt");
+
+  var cockTailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/search.php?s=" + cocktail;
+
+  callAjaxForCocktail(cockTailDBURL);
+})
