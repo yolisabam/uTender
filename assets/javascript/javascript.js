@@ -211,7 +211,7 @@ $("#startAssesment").on("click", function(){
       method : "POST",
       url : queryURL
     }).done(function(response){
-      // console.log(response);
+      //console.log(response);
       // console.log(response.description);
       $("#date").text('Date : ' + response.current_date);
       $("#color").text('Color : ' + response.color);
