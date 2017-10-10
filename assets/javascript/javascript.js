@@ -4,6 +4,7 @@ var dob = "";
 var age = 0;
 var cocktail = "";
 var zodiacSign = "";
+var cockTailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/random.php";
 
 //submit button click listener
 $("#startAssesment").on("click", function(){
@@ -52,31 +53,30 @@ $("#startAssesment").on("click", function(){
     $(".row").empty();
 
     //create the grid
-    var col1 = $("<div>").addClass("col-md-2");
-    var col2 = $("<div>").addClass("col-md-8").attr("id", "div-content");
-    var col3 = $("<div>").addClass("col-md-2");
+    var col1 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
+    var col2 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-8").attr("id", "div-content");
+    var col3 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
 
-    //append 3 cols inside the parent row
-    $(".row").append(col1);
-    $(".row").append(col2)
-    $(".row").append(col3);
-
-    //create 2 rows inside col2
-    var col2Row0 = $("<div>").addClass("row").attr("id", "row0");
     var col2Row1 = $("<div>").addClass("row").attr("id", "row1");
     var col2Row2 = $("<div>").addClass("row").attr("id", "row2");
     var col2Row3 = $("<div>").addClass("row").attr("id", "row3");
     var col2Row4 = $("<div>").addClass("row").attr("id", "row4");
+    var col2Row5 = $("<div>").addClass("row").attr("id", "row5");
 
-    
-    //append the 2 rows inside div content
-    $("#div-content").append(col2Row0, col2Row1, col2Row2, col2Row3, col2Row4);
+    col2Row1.append($("<div class='col-xs-12' id='col2-row1'>"));
+    col2Row2.append($("<div class='col-xs-12' id='col2-row2'>"));
+    col2Row3.append($("<div class='col-xs-12' id='col2-row3'>"));
+    //col2Row4.append($("<div class='col-xs-12' id='col2-row4'>"));
+    col2Row5.append($("<div class='col-xs-12' id='col2-row5'>"));
 
-    //grab row 1 of col 2 and add 2 cols inside,
-    col1 = $("<div>").addClass("col-md-6").attr('id','row1-col1');
-    col2 = $("<div>").addClass("col-md-6").attr('id','row1-col2');
+    $(".row").append(col1);
+    $(".row").append(col2)
+    $(".row").append(col3);
 
-    $("#row1").append(col1, col2);
+    $("#div-content").append(col2Row1,col2Row2,col2Row3,col2Row4,col2Row5);
+    // $("#row1").append($("<div class='col-xs-3'>"));
+    // $("#row1").append($("<div class='col-xs-6'>")); 
+    // $("#row1").append($("<div class='col-xs-3'>"));
 
     //get the zodiac sign based on dob
     zodiacSign = getZodiacSign(dob);
@@ -84,14 +84,14 @@ $("#startAssesment").on("click", function(){
 
     //display zodiac sign
     //$("#row1").empty();
-    $("#row0").append("<h3>Hello " + zodiacSign + "!</h3>");
+    $("#col2-row1").append("<h3>Hello " + zodiacSign + "!</h3>");
 
     //display zodiac image
     //$("#row2").empty();
     var img = $("<img>");
     img.attr("src", getZodiacImageURL(zodiacSign)).attr("alt", zodiacSign + " thumbnail").attr("id", "img-zodiac");
 
-    $("#row1-col1").append(img);
+    $("#col2-row2").append(img);
   
     //display horoscope details  
     //create variables
@@ -112,9 +112,7 @@ $("#startAssesment").on("click", function(){
     var p7 = $("<p>").attr("id", "mood");
 
     //$("#row3").empty();
-    //$("#col2-row3").append(p1, p2, p3, p4, p5, p6, p7);
-    $("#row1-col2").append(p1, p2, p3, p5, p6, p7);
-    $("#row2").append(p4);
+    $("#col2-row3").append(p1, p2, p3, p4, p5, p6, p7);
 
     var day = "today";
     var queryURL = "https://aztro.herokuapp.com?sign=" + zodiacSign + "&day=" + day;
@@ -161,7 +159,7 @@ $("#startAssesment").on("click", function(){
     btnYest.text("Yesterday");
 
     //append the yesterday button
-    $("#row3").append(btnYest);
+    $("#col-div-1").append(btnYest);
 
     //create the today button
     var btnToday = $("<button>");
@@ -172,7 +170,7 @@ $("#startAssesment").on("click", function(){
     btnToday.text("Today");
 
      //append the today button
-    $("#row3").append(btnToday);
+    $("#col-div-2").append(btnToday);
 
     //create the tomorrow button
     var btnTomorrow = $("<button>");
@@ -183,7 +181,7 @@ $("#startAssesment").on("click", function(){
     btnTomorrow.text("Tomorrow");
 
     //append the tomorrow button
-    $("#row3").append(btnTomorrow);
+    $("#col-div-3").append(btnTomorrow);
 
     //display random cocktail button
     var btnRandom = $("<button>");
@@ -193,7 +191,7 @@ $("#startAssesment").on("click", function(){
     btnRandom.text("Get A Random Cocktail");
 
     // $("#row5").append($("<div class='col-xs-12' id='col-btn-random'>"));
-    $("#row4").append(btnRandom);
+    $("#col2-row5").append(btnRandom);
 
   }
 
@@ -223,6 +221,7 @@ $("#startAssesment").on("click", function(){
     //console.log("I clicked : " + day);
   });
 
+<<<<<<< HEAD
   //listener for load cocktail selection button
   //$(document).on("click", ".btn-cocktail-selection", function(){
   $(document).on("click", "#btn-random", function(){  
@@ -283,6 +282,8 @@ $("#startAssesment").on("click", function(){
 
   });
 
+=======
+>>>>>>> master
   function getZodiacSign(date) {
     var mmdd = parseMMDD(date);
     mmdd = parseInt(mmdd);
@@ -307,18 +308,16 @@ $("#startAssesment").on("click", function(){
       return "Scorpio";
     } else if (mmdd >= 1122 && mmdd <= 1221) {
       return "Sagittarius";
-    } else if ( (mmdd >= 1222 && mmdd <= 1231) || (mmdd >= 101 && mmdd <= 119)) {
+    } else if (mmdd >= 1222 && mmdd <= 119) {
       return "Capricorn";
-    } else if (mmdd >= 120 && mmdd <= 218) {
+    } else if (mmdd >= 120 && mmdd <= 118) {
       return "Aquarius";
-    } else if (mmdd >= 219 && mmdd <= 320) {
+    } else if (mmdd >= 119 && mmdd <= 320) {
       return "Pisces";
     } else {
       return 'error!';
     }
   }
-
-
 
   function parseMMDD(date) {
     var mm = date.split("-")[1];
@@ -335,3 +334,174 @@ function getZodiacImageURL(zodiac) {
 }
 
 });
+
+
+$(document).on("click", ".btn-get-random",function(){
+
+  $(".row").empty();  
+  callAjaxForCocktail();
+  //renderElementsForRandomCoctail();
+});
+
+$(document).on("click",".btn-day1",function(){
+
+  $(".row").empty();  
+  callAjaxForCocktail();
+
+});
+
+
+
+
+function callAjaxForCocktail(){
+
+    $.ajax({
+
+    method:"GET",
+
+    url:cockTailDBURL
+
+    }).done(function(response){
+
+    console.log(response);
+
+    console.log(response.drinks[0].strDrink);
+
+    renderElementsForRandomCoctail(response);
+
+    console.log(response.drinks[0].strDrinkThumb);
+
+})
+}
+
+
+function renderElementsForRandomCoctail(response){
+
+    var divContainer = $("<div>");
+
+    divContainer.addClass("container");
+
+    var divRow = $("<div>");
+
+    divRow.addClass("row");
+
+    var divImage =  $("<div>");
+
+    divImage.addClass("col-lg-12");
+
+    imageTag = $("<img>");
+    
+    imageTag.addClass("img-responsive img-center center-block");
+    
+    imageTag.attr("src",response.drinks[0].strDrinkThumb);
+
+    imageTag.css("width","300px");
+
+    imageTag.css("height","300px");
+
+    var cocktailNameDiv =   $('<div>');
+
+    var heading1 = $("<h1 class ='text-center'>");
+
+    heading1.text(response.drinks[0].strDrink);
+
+    var paragraphDiv = $('<div>');
+
+    paragraphDiv.addClass("row");
+
+    var paragraphDivSize = $('<div>');
+
+    paragraphDivSize.addClass("col-lg-12");
+
+    var buttonDiv = $("<div>");
+
+    buttonDiv.addClass("container");
+
+    var buttonRow = $("<div>");
+
+    buttonRow.addClass("row")
+
+    var buttonRowSize = $("<div>");
+
+    buttonRowSize.addClass("col-lg-12").attr("id","col12");
+
+    var buttonPopulateSize = $("<div>");
+
+    buttonPopulateSize.addClass("col-lg-12").attr("id","col12");
+
+    var heading2 = $("<h2>");
+    var paragraphTag1 = $("<p>");
+    var paragraphTag2 = $("<p>");
+    var paragraphTag3 = $("<p>");
+    var paragraphTag4 = $("<p>");
+    paragraphTag1.addClass("text-center");
+    paragraphTag2.addClass("text-center");
+    paragraphTag3.addClass("text-center");
+    paragraphTag4.addClass("text-center");
+    heading2.addClass("text-center");
+    heading2.css("text-decoration","underline");
+    heading2.text("Reciepe")
+
+    paragraphTag1.text("The main ingredients are "+response.drinks[0].strIngredient1+" , "+response.drinks[0].strIngredient2+ " and " +response.drinks[0].strIngredient3);
+    paragraphTag2.text("take "+response.drinks[0].strMeasure1+ " of "+response.drinks[0].strIngredient1+ " , "+response.drinks[0].strMeasure2+" of" +response.drinks[0].strIngredient2+" and "+response.drinks[0].strMeasure3+ "of "+response.drinks[0].strIngredient3+".");
+    paragraphTag3.text("How To Make it?");
+    paragraphTag4.text(response.drinks[0].strInstructions);
+
+    var anotherRandomCocktail = $("<button>");
+    anotherRandomCocktail.addClass("btn btn-default btn-day1");
+    anotherRandomCocktail.attr("id", "another-random-cocktail");
+    anotherRandomCocktail.attr("type", "submit");
+    anotherRandomCocktail.attr("data-text", "generate another coctail for you?");
+    anotherRandomCocktail.text("generate another coctail for you?");
+
+    var cocktailDataBase = $("<button>");
+    cocktailDataBase.addClass("btn btn-default btn-day2");
+    cocktailDataBase.attr("id", "cocktail-database");
+    cocktailDataBase.attr("type", "submit");
+    cocktailDataBase.attr("data-text", "Check out the drinks that suits you");
+    cocktailDataBase.text("Check out the drinks that suits you");
+
+    var addToFireBase = $("<button>");
+    addToFireBase.addClass("btn btn-default btn-day3");
+    addToFireBase.attr("id", "cocktail-database");
+    addToFireBase.attr("type", "submit");
+    addToFireBase.attr("data-text", "Check out the drinks that suits you");
+    addToFireBase.text("add to firebase");
+    //paragraph
+  
+
+    divImage.append(imageTag);
+    cocktailNameDiv.append(heading1);
+    divImage.append(cocktailNameDiv);
+    cocktailNameDiv.append(heading2);
+    cocktailNameDiv.append(paragraphTag1);
+    cocktailNameDiv.append(paragraphTag2);
+    cocktailNameDiv.append(paragraphTag3);
+    cocktailNameDiv.append(paragraphTag4)
+    
+    cocktailNameDiv.append(buttonDiv);
+    buttonDiv.append(buttonRow);
+    buttonRow.append(buttonPopulateSize);
+    buttonPopulateSize.append(anotherRandomCocktail);
+
+    buttonDiv.append(buttonRow);
+    buttonRow.append(buttonPopulateSize);
+    buttonPopulateSize.append(cocktailDataBase);
+
+    buttonDiv.append(buttonRow);
+    buttonRow.append(buttonPopulateSize);
+    buttonPopulateSize.append(addToFireBase);
+    
+
+    
+    
+    divRow.append(divImage);
+
+    divContainer.append(divRow);
+    
+    $(".row").append(divContainer);
+
+
+
+}
+
