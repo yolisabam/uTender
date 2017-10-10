@@ -358,7 +358,7 @@ function renderElementsForRandomCoctail(response){
 
     var cocktailNameDiv =   $('<div>');
 
-    var heading1 = $("<h1 class ='text-center'>");
+    var heading1 = $("<h2 class ='text-center'>");
 
     heading1.text(response.drinks[0].strDrink);
 
@@ -386,7 +386,7 @@ function renderElementsForRandomCoctail(response){
 
     buttonPopulateSize.addClass("col-md-12").attr("id","col12");
 
-    var heading2 = $("<h2>");
+    var heading2 = $("<h3>");
     //var paragraphTag1 = $("<p>");
     //var paragraphTag2 = $("<p>");
 
