@@ -308,11 +308,11 @@ $("#startAssesment").on("click", function(){
       return "Scorpio";
     } else if (mmdd >= 1122 && mmdd <= 1221) {
       return "Sagittarius";
-    } else if (mmdd >= 1222 && mmdd <= 119) {
+    } else if ( (mmdd >= 1222 && mmdd <= 1231) || (mmdd >= 101 && mmdd <= 119)) {
       return "Capricorn";
-    } else if (mmdd >= 120 && mmdd <= 118) {
+    } else if (mmdd >= 120 && mmdd <= 218) {
       return "Aquarius";
-    } else if (mmdd >= 119 && mmdd <= 320) {
+    } else if (mmdd >= 219 && mmdd <= 320) {
       return "Pisces";
     } else {
       return 'error!';
