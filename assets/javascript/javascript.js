@@ -196,7 +196,7 @@ $("#startAssesment").on("click", function(){
     btnRandom.addClass("btn btn-default btn-get-random");
     btnRandom.attr("id", "btn-random");
     btnRandom.attr("type", "submit");
-    btnRandom.text("Get A Random Cocktail");
+    btnRandom.text("Get Your Cocktail of the Day");
 
     $("#row4").append(btnRandom);
   }
@@ -466,7 +466,7 @@ $(document).on("click", "#cocktail-database", function(){
   col2.append($("<div class='row' id='col2-row1'></div"));
   col2.append($("<div class='row' id='col2-row2'></div"));
   col2.append($("<div class='row' id='col2-row3'></div"));
-  col2.append($("<div class='row' id='col2-row4'></div"))
+  //col2.append($("<div class='row' id='col2-row4'></div"))
 
   $(".row").append(col1, col2, col3);
 
@@ -495,7 +495,15 @@ $(document).on("click", "#cocktail-database", function(){
 
       div.append(p, img);
 
-     $("#div-content").append(div);
+      //insert the div with cocktail & name into its appropriate row
+      if (i < 5) {
+        $("#col2-row1").append(div);
+      } else if (i >= 5 && i < 10) {
+        $("#col2-row2").append(div);
+      } else {
+        $("#col2-row3").append(div);
+      }
+     //$("#div-content").append(div);
     }
   });
 

@@ -167,3 +167,17 @@ h3, p {
 #dob-label{
     font-family: 'Anton', sans-serif;
 }*/
+
+.start:hover, 
+#btn-yest:hover,
+#btn-today:hover,
+#btn-tomorrow:hover,
+#btn-random:hover,
+.btn-get-random:hover,
+#another-random-cocktail:hover,
+#cocktail-database:hover,
+#cocktail-firebase:hover,
+#drink-history:hover,
+#td-cocktail-name:hover {
+    background-color: #F3CD7D;
+}
