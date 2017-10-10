@@ -34,6 +34,36 @@ background-color: none;
 background: none;
 color: white;
 }
+
+#panel-wrapper {
+    width: 90%;
+    height: 100%;
+    display: flex;
+    margin: 0 auto;
+
+}
+
+#panel-wrapper div{
+    flex: 1;
+    -webkit-flex: 1;
+}
+
+.image-cocktail-thumbnail {
+
+}
+
+h2 {
+    color: #FEE731;
+    font-family: 'Audiowide', cursive;
+
+}
+
+ul {
+    color: white;
+    font-family: 'Audiowide', cursive;
+
+}
+
 div .about,
 .info {
 /*  background-image: url(../images/purple-gradient.png)*/;
@@ -109,7 +139,7 @@ img {
 
 
 .app-container {
-    margin: 30px auto 0 auto;
+   /* margin: 30px auto 0 auto;*/
     -webkit-animation-duration: 2s;
 }
 
