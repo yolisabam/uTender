@@ -259,17 +259,12 @@ $("#startAssesment").on("click", function(){
       var cocktail = "";
       var cocktailImageURL = "";
 
-      for (var i = 0; i < 16; i++) {
+      for (var i = 0; i < 15; i++) {
         //get a random 16 cocktails
         var index = Math.floor(Math.random * (length));
         console.log("imageURL " + i + " :" + response.drinks[i].strDrinkThumb);
         cocktail = response.drinks[i].strDrink;
         cocktailImageURL = response.drinks[i].strDrinkThumb;
-
-        //create a new column
-        if (i === 0 || i === 4 || i === 8 || i === 12) {
-          var col = $("<div class='col-md-3'></div>");  
-        }
         
 
         //append the column in the appropriate row
@@ -351,29 +346,25 @@ $(document).on("click",".btn-day1",function(){
 });
 
 
-
-
 function callAjaxForCocktail(){
 
-    $.ajax({
+  $.ajax({
 
-    method:"GET",
+  method:"GET",
 
-    url:cockTailDBURL
+  url:cockTailDBURL
 
-    }).done(function(response){
+  }).done(function(response){
 
-    console.log(response);
+  console.log(response);
 
-    console.log(response.drinks[0].strDrink);
+  console.log(response.drinks[0].strDrink);
 
-    renderElementsForRandomCoctail(response);
+  renderElementsForRandomCoctail(response);
 
-    console.log(response.drinks[0].strDrinkThumb);
-
-})
+  console.log(response.drinks[0].strDrinkThumb);
+  });
 }
-
 
 function renderElementsForRandomCoctail(response){
 
@@ -430,52 +421,91 @@ function renderElementsForRandomCoctail(response){
     buttonPopulateSize.addClass("col-lg-12").attr("id","col12");
 
     var heading2 = $("<h2>");
-    var paragraphTag1 = $("<p>");
-    var paragraphTag2 = $("<p>");
+    //var paragraphTag1 = $("<p>");
+    //var paragraphTag2 = $("<p>");
+
+    //create a list for the ingredients
+    var ul = $("<ul>");
+
+    //
     var paragraphTag3 = $("<p>");
     var paragraphTag4 = $("<p>");
-    paragraphTag1.addClass("text-center");
-    paragraphTag2.addClass("text-center");
+
+
+    //paragraphTag1.addClass("text-center");
+    //paragraphTag2.addClass("text-center");
+
+    ul.addClass("text-center");
     paragraphTag3.addClass("text-center");
     paragraphTag4.addClass("text-center");
     heading2.addClass("text-center");
     heading2.css("text-decoration","underline");
-    heading2.text("Reciepe")
+    heading2.text("Recipe")
 
-    paragraphTag1.text("The main ingredients are "+response.drinks[0].strIngredient1+" , "+response.drinks[0].strIngredient2+ " and " +response.drinks[0].strIngredient3);
-    paragraphTag2.text("take "+response.drinks[0].strMeasure1+ " of "+response.drinks[0].strIngredient1+ " , "+response.drinks[0].strMeasure2+" of" +response.drinks[0].strIngredient2+" and "+response.drinks[0].strMeasure3+ "of "+response.drinks[0].strIngredient3+".");
-    paragraphTag3.text("How To Make it?");
+    
+
+    //put the list together
+    for (var i = 1; i <= 15; i++) {
+      var ingredientNumber = "strIngredient" + i;
+      var measureNumber = "strMeasure" + i;
+
+      console.log("ingredientNumber : " + ingredientNumber);
+      console.log("measureNumber : " + measureNumber);
+
+      var ingredient = response.drinks[0][ingredientNumber];
+      var measurement = response.drinks[0][measureNumber];
+
+      console.log("ingredient : " + ingredient);
+      console.log("measurement : " + measurement);
+
+      if (response.drinks[0][ingredientNumber] !== "") {
+        ul.append($("<li>" + measurement + " " + ingredient + "</li>"))
+      }
+    }
+
+    //paragraphTag1.text("Main Ingredients : " + response.drinks[0].strIngredient1 + " , " + response.drinks[0].strIngredient2 + " and " + response.drinks[0].strIngredient3);
+    //paragraphTag2.text("take " + response.drinks[0].strMeasure1 + " " + response.drinks[0].strIngredient1 + " , " +response.drinks[0].strMeasure2 + " " + response.drinks[0].strIngredient2 + " and " + response.drinks[0].strMeasure3 + " " + response.drinks[0].strIngredient3 + ".");
+    paragraphTag3.text("Mixing Instructions:");
     paragraphTag4.text(response.drinks[0].strInstructions);
 
     var anotherRandomCocktail = $("<button>");
     anotherRandomCocktail.addClass("btn btn-default btn-day1");
     anotherRandomCocktail.attr("id", "another-random-cocktail");
     anotherRandomCocktail.attr("type", "submit");
-    anotherRandomCocktail.attr("data-text", "generate another coctail for you?");
-    anotherRandomCocktail.text("generate another coctail for you?");
+
+    // anotherRandomCocktail.attr("data-text", "generate another coctail for you?");
+    // anotherRandomCocktail.text("generate another coctail for you?");
+    anotherRandomCocktail.attr("data-text", "Lets generate another random drink");
+    anotherRandomCocktail.text("Lets generate another random drink");  
 
     var cocktailDataBase = $("<button>");
     cocktailDataBase.addClass("btn btn-default btn-day2");
     cocktailDataBase.attr("id", "cocktail-database");
     cocktailDataBase.attr("type", "submit");
-    cocktailDataBase.attr("data-text", "Check out the drinks that suits you");
-    cocktailDataBase.text("Check out the drinks that suits you");
+
+    // cocktailDataBase.attr("data-text", "Check out the drinks that suits you");
+    // cocktailDataBase.text("Check out the drinks that suits you");
+    cocktailDataBase.attr("data-text", "Or pick from random 15");
+    cocktailDataBase.text("Or pick from random 15");
 
     var addToFireBase = $("<button>");
     addToFireBase.addClass("btn btn-default btn-day3");
     addToFireBase.attr("id", "cocktail-database");
     addToFireBase.attr("type", "submit");
-    addToFireBase.attr("data-text", "Check out the drinks that suits you");
-    addToFireBase.text("add to firebase");
+    addToFireBase.attr("data-text", "Awesome! I will make this drink");
+    addToFireBase.text("Awesome! I will make this drink");
     //paragraph
-  
 
     divImage.append(imageTag);
     cocktailNameDiv.append(heading1);
     divImage.append(cocktailNameDiv);
     cocktailNameDiv.append(heading2);
-    cocktailNameDiv.append(paragraphTag1);
-    cocktailNameDiv.append(paragraphTag2);
+
+    //add the ingredients list
+    cocktailNameDiv.append(ul);
+
+    //cocktailNameDiv.append(paragraphTag1);
+    //cocktailNameDiv.append(paragraphTag2);
     cocktailNameDiv.append(paragraphTag3);
     cocktailNameDiv.append(paragraphTag4)
     
@@ -492,14 +522,16 @@ function renderElementsForRandomCoctail(response){
     buttonRow.append(buttonPopulateSize);
     buttonPopulateSize.append(addToFireBase);
     
-
-    
-    
     divRow.append(divImage);
 
     divContainer.append(divRow);
-    
-    $(".row").append(divContainer);
+
+    //remove the row to be replaced by new stuff
+    $(".row").remove();
+
+    //add the new stuff
+    $(".app-container").append(divRow);
+    //$(".row").append(divContainer);
 
 
 
