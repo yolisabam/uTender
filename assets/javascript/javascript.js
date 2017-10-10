@@ -592,6 +592,9 @@ $(document).on("click","#cocktail-firebase", function() {
 
 //add event listener for showing drink history
 $(document).on("click","#drink-history", function() {
+
+  var firstNameCap = getfirstNameCap(firstName);
+
   //remove the row div
   $(".row").remove();
 
@@ -601,7 +604,7 @@ $(document).on("click","#drink-history", function() {
 
   //create a panel
   var panel = $("<div>").addClass("panel-about");
-  var panelHeading = $("<div>").addClass("panel-heading aboutHead").text("Your Cocktail History");
+  var panelHeading = $("<div>").addClass("panel-heading aboutHead").text(firstNameCap + ", Here's Your Cocktail History");
   var panelBody = $("<div>").addClass("panel-body main-section");
 
   //put the rows, columns and panels together
@@ -613,15 +616,15 @@ $(document).on("click","#drink-history", function() {
   //create a table display drink history info
   var table = $("<table>").addClass("table");
   var tableRow1 = $("<tr>");
-  var tableHead1 = $("<th>").addClass("table-head").text("User");
-  var tableHead2 = $("<th>").addClass("table-head").text("Date");
-  var tableHead3 = $("<th>").addClass("table-head").text("Cocktail");
-  var tableHead4 = $("<th>").addClass("table-head").text("Rating");
+  //var tableHead1 = $("<th>").addClass("table-head").text("User");
+  var tableHead1 = $("<th>").addClass("table-head").text("Date");
+  var tableHead2 = $("<th>").addClass("table-head").text("Cocktail");
+  var tableHead3 = $("<th>").addClass("table-head").text("Rating");
   
   
 
   //put the table structure together
-  tableRow1.append(tableHead1, tableHead2, tableHead3, tableHead4);
+  tableRow1.append(tableHead1, tableHead2, tableHead3);
   table.append(tableRow1);
   //table.append(tableRow12);
 
@@ -631,63 +634,52 @@ $(document).on("click","#drink-history", function() {
   //finally append eveything inside the container
   $(".app-container").append(row);
 
-  //display user's cocktail consumption history
-  // database.ref("users/" + firstName).on("value", function(snapshot) {
-    //var sv = snapshot.val();
-    //console.log("snapshot : " + snapshot);
-    //console.log(snapshot.val());
+//display user's cocktail consumption history
+// database.ref("users/" + firstName).on("value", function(snapshot) {
+  //var sv = snapshot.val();
+  //console.log("snapshot : " + snapshot);
+  //console.log(snapshot.val());
 
-    var tableRow2 = ""; //$("<tr>");   
-    var tableData1= "";
-    var tableData2 = "";
-    var tableData3 = "";
-    var tableData4 = "";
+  var tableRow2 = ""; //$("<tr>");   
+  var tableData1= "";
+  var tableData2 = "";
+  var tableData3 = "";
+  //var tableData4 = "";
 
-    database.ref('users/' + firstName + "/").on("value", function(snapshot) {
-      var data = snapshot.val();
-      // console.log("this is the snapshot : " + data.val());
+  database.ref('users/' + firstName + "/").on("value", function(snapshot) {
+    var data = snapshot.val();
+    // console.log("this is the snapshot : " + data.val());
 
-      // data.forEach(function(childSnapshot) {
-      //   console.log('date is : ' + childSnapshot.val().date);
-      //   console.log('cocktail is : ' + childSnapshot.val().cocktail);
-      // })
-      //console.log('snapshot is : ' + snapshot.val());
-      console.log(snapshot.val());
-      //console.log(data);
+    // data.forEach(function(childSnapshot) {
+    //   console.log('date is : ' + childSnapshot.val().date);
+    //   console.log('cocktail is : ' + childSnapshot.val().cocktail);
+    // })
+    //console.log('snapshot is : ' + snapshot.val());
+    console.log(snapshot.val());
+    //console.log(data);
 
-      for (var key in data) {
-        tableRow2 = $("<tr>");
+    for (var key in data) {
+      tableRow2 = $("<tr>");
 
-        //console.log(key);
-        //console.log(data[key].date);
-        //console.log(data[key].cocktail);
+      //console.log(key);
+      //console.log(data[key].date);
+      //console.log(data[key].cocktail);
 
-        tableData1 = $("<td>").addClass("table-data").text(firstName);
-        tableData2 = $("<td>").addClass("table-data").text(data[key].date);
-        tableData3 = $("<td>").addClass("table-data").text(data[key].cocktail);
-        tableData4 = $("<td>").addClass("table-data").text(data[key].rating);
+      //tableData1 = $("<td>").addClass("table-data").text(firstName);
+      tableData1 = $("<td>").addClass("table-data table-data-date").attr("id","id-td-date").text(data[key].date);
+      tableData2 = $("<td>").addClass("table-data table-data-cocktail").attr("id","td-cocktail-name").text(data[key].cocktail);
+      tableData3 = $("<td>").addClass("table-data table-data-rating").attr("id","id.rating").text(data[key].rating);
 
-        tableRow2.append(tableData1, tableData2, tableData3, tableData4);
-        table.append(tableRow2);
-      }
+      tableRow2.append(tableData1, tableData2, tableData3);
+      table.append(tableRow2);
+    }
+  });
+    
+});
 
-      
-
-
-    });
-
-
-    // console.log(snapshot);
-
-    // snapshot.forEach(function(childSnapshot) {
-    //   console.log("childSnapshot : " + childSnapshot);
-    //   console.log(childSnapshot.val());
-    //   tableData1 = $("<td>").addClass("table-data").text(firstName);
-    //   tableData2 = $("<td>").addClass("table-data").text(childSnapshot.date);
-    //   tableData3 = $("<td>").addClass("table-data").text(childSnapshot.cocktail);
-    //   tableData4 = $("<td>").addClass("table-data").text(childSnapshot.rating);
-    //   tableRow2.append(tableData1, tableData2, tableData3, tableData4);
-    });
+function getfirstNameCap(firstName) {
+  return firstName.split('')[0].toUpperCase() + firstName.split('').slice(1, firstName.length).join('').toLowerCase();
+}
 
     
     // table.append(tableRow2);
