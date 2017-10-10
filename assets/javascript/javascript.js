@@ -439,6 +439,7 @@ function renderElementsForRandomCoctail(response){
     $("#main-row").append(divContainer);
 
 
+    
 
 }
 
