@@ -90,8 +90,8 @@ $("#startAssesment").on("click", function(){
     $("#div-content").append(col2Row0, col2Row1, col2Row2, col2Row3, col2Row4);
 
     //grab row 1 of col 2 and add 2 cols inside,
-    col1 = $("<div>").addClass("col-md-6").attr('id','row1-col1');
-    col2 = $("<div>").addClass("col-md-6").attr('id','row1-col2');
+    col1 = $("<div>").addClass("col-sm-6").attr('id','row1-col1');
+    col2 = $("<div>").addClass("col-sm-6").attr('id','row1-col2');
 
     $("#row1").append(col1, col2);
 
@@ -300,7 +300,7 @@ $(document).on("click", ".btn-get-random",function(){
   //renderElementsForRandomCoctail();
 });
 
-$(document).on("click",".btn-day1",function(){
+$(document).on("click","#another-random-cocktail",function(){
 
   $(".row").empty();  
   callAjaxForCocktail(randomCockTailDBURL);
@@ -344,7 +344,7 @@ function renderElementsForRandomCoctail(response){
 
     var divImage =  $("<div>");
 
-    divImage.addClass("col-lg-12");
+    divImage.addClass("col-md-12");
 
     imageTag = $("<img>");
     
@@ -368,7 +368,7 @@ function renderElementsForRandomCoctail(response){
 
     var paragraphDivSize = $('<div>');
 
-    paragraphDivSize.addClass("col-lg-12");
+    paragraphDivSize.addClass("col-md-12");
 
     var buttonDiv = $("<div>");
 
@@ -380,11 +380,11 @@ function renderElementsForRandomCoctail(response){
 
     var buttonRowSize = $("<div>");
 
-    buttonRowSize.addClass("col-lg-12").attr("id","col12");
+    buttonRowSize.addClass("col-md-12").attr("id","col12");
 
     var buttonPopulateSize = $("<div>");
 
-    buttonPopulateSize.addClass("col-lg-12").attr("id","col12");
+    buttonPopulateSize.addClass("col-md-12").attr("id","col12");
 
     var heading2 = $("<h2>");
     //var paragraphTag1 = $("<p>");
@@ -407,8 +407,6 @@ function renderElementsForRandomCoctail(response){
     heading2.addClass("text-center");
     heading2.css("text-decoration","underline");
     heading2.text("Recipe")
-
-    
 
     //put the list together
     for (var i = 1; i <= 15; i++) {
@@ -435,7 +433,7 @@ function renderElementsForRandomCoctail(response){
     paragraphTag4.text(response.drinks[0].strInstructions);
 
     var anotherRandomCocktail = $("<button>");
-    anotherRandomCocktail.addClass("btn btn-default btn-day1");
+    anotherRandomCocktail.addClass("btn btn-default btn-random-cocktail");
     anotherRandomCocktail.attr("id", "another-random-cocktail");
     anotherRandomCocktail.attr("type", "submit");
 
@@ -445,7 +443,7 @@ function renderElementsForRandomCoctail(response){
     anotherRandomCocktail.text("Lets generate another random drink");  
 
     var cocktailDataBase = $("<button>");
-    cocktailDataBase.addClass("btn btn-default btn-day2");
+    cocktailDataBase.addClass("btn btn-default btn-cocktail-database");
     cocktailDataBase.attr("id", "cocktail-database");
     cocktailDataBase.attr("type", "submit");
 
@@ -455,12 +453,19 @@ function renderElementsForRandomCoctail(response){
     cocktailDataBase.text("Or pick from random 15");
 
     var addToFireBase = $("<button>");
-    addToFireBase.addClass("btn btn-default btn-day3");
+    addToFireBase.addClass("btn btn-default btn-add-to-firebase");
     addToFireBase.attr("id", "cocktail-firebase");
     addToFireBase.attr("type", "submit");
     addToFireBase.attr("data-text", "Awesome! I will make this drink");
     addToFireBase.text("Awesome! I will make this drink");
-    //paragraph
+    
+    //add drink history button
+    var viewDrinkHistory = $("<button>");
+    viewDrinkHistory.addClass("btn btn-default btn-drink-history");
+    viewDrinkHistory.attr("id", "drink-history");
+    viewDrinkHistory.attr("type", "submit");
+    viewDrinkHistory.attr("data-text", "View your drink history");
+    viewDrinkHistory.text("View your drink history");
 
     divImage.append(imageTag);
     cocktailNameDiv.append(heading1);
@@ -475,7 +480,10 @@ function renderElementsForRandomCoctail(response){
     cocktailNameDiv.append(paragraphTag3);
     cocktailNameDiv.append(paragraphTag4)
     
+    //create a button container 
     cocktailNameDiv.append(buttonDiv);
+
+    //add the buttons 
     buttonDiv.append(buttonRow);
     buttonRow.append(buttonPopulateSize);
     buttonPopulateSize.append(anotherRandomCocktail);
@@ -487,10 +495,15 @@ function renderElementsForRandomCoctail(response){
     buttonDiv.append(buttonRow);
     buttonRow.append(buttonPopulateSize);
     buttonPopulateSize.append(addToFireBase);
-    
+
+    buttonDiv.append(buttonRow);
+    buttonRow.append(buttonPopulateSize);
+    buttonPopulateSize.append(viewDrinkHistory);
+
+    //append the cocktail image into the new row
     divRow.append(divImage);
 
-    divContainer.append(divRow);
+    //divContainer.append(divRow);
 
     //remove the row to be replaced by new stuff
     $(".row").remove();
@@ -506,9 +519,9 @@ $(document).on("click", "#cocktail-database", function(){
   $(".row").empty();
 
   //create the grid
-  var col1 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
-  var col2 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-8").attr("id", "div-content");
-  var col3 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
+  var col1 = $("<div>").addClass("col-sm-2");
+  var col2 = $("<div>").addClass("col-sm-8").attr("id", "div-content");
+  var col3 = $("<div>").addClass("col-sm-2");
 
   //create 4rows inside col2
   col2.append($("<div class='row' id='col2-row1'></div"));
@@ -576,3 +589,75 @@ $(document).on("click","#cocktail-firebase", function() {
     date : date
   })
 });
+
+//add event listener for showing drink history
+$(document).on("click","#drink-history", function() {
+  //remove the row div
+  $(".row").remove();
+
+  //create a new row and column
+  var row = $("<div>").addClass("row").attr("id", "row-view-history");
+  var col = $("<div>").addClass("col-sm-12 col-drink-history").attr("id", "drink-history");
+
+  //create a panel
+  var panel = $("<div>").addClass("panel-about");
+  var panelHeading = $("<div>").addClass("panel-heading aboutHead").text("Your Cocktail History");
+  var panelBody = $("<div>").addClass("panel-body main-section");
+
+  //put the rows, columns and panels together
+  panelHeading.append(panelBody);
+  panel.append(panelHeading);
+  col.append(panel);
+  row.append(col);
+
+  //create a table display drink history info
+  var table = $("<table>").addClass("table");
+  var tableRow1 = $("<tr>");
+  var tableHead1 = $("<th>").addClass("table-head").text("User");
+  var tableHead2 = $("<th>").addClass("table-head").text("Date");
+  var tableHead3 = $("<th>").addClass("table-head").text("Cocktail");
+  var tableHead4 = $("<th>").addClass("table-head").text("Rating");
+  
+  
+
+  //put the table structure together
+  tableRow1.append(tableHead1, tableHead2, tableHead3, tableHead4);
+  table.append(tableRow1);
+  //table.append(tableRow12);
+
+  //append table inside panel body
+  panelBody.append(table);
+
+  //finally append eveything inside the container
+  $(".app-container").append(row);
+
+  //display user's cocktail consumption history
+  // database.ref("users/" + firstName).on("value", function(snapshot) {
+    //var sv = snapshot.val();
+    //console.log("snapshot : " + snapshot);
+    //console.log(snapshot.val());
+
+    var tableRow2 = $("<tr>");   
+    var tableData1= "";
+    var tableData2 = "";
+    var tableData3 = "";
+    var tableData4 = "";
+
+    var snapshot = database.ref("users").child();
+    console.log(snapshot)
+
+    // snapshot.forEach(function(childSnapshot) {
+    //   console.log("childSnapshot : " + childSnapshot);
+    //   console.log(childSnapshot.val());
+    //   tableData1 = $("<td>").addClass("table-data").text(firstName);
+    //   tableData2 = $("<td>").addClass("table-data").text(childSnapshot.date);
+    //   tableData3 = $("<td>").addClass("table-data").text(childSnapshot.cocktail);
+    //   tableData4 = $("<td>").addClass("table-data").text(childSnapshot.rating);
+    //   tableRow2.append(tableData1, tableData2, tableData3, tableData4);
+    // });
+
+    
+    // table.append(tableRow2);
+
+  });
+// });
