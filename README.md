@@ -22,16 +22,16 @@ uTender is currently deployed ot Github. After reading prerequisites,  use [this
 
 
 ## Built With
-[Bootstrap](http://getbootstrap.com/docs/3.3/getting-started/) - The web framework used
-[FireBase](https://firebase.google.com/) - Data Management
-[AZTRO](https://aztro.readthedocs.io/en/latest/) - API used to generate daily horoscope
-[The CocktailDB](http://www.thecocktaildb.com/api.php) - Used to generate cocktail images and recipes
-[Animate CSS](https://daneden.github.io/animate.css/) - Used to generate animations
-Javascript
-JQuery
-Moment JS
-HTML
-CSS
+* [Bootstrap](http://getbootstrap.com/docs/3.3/getting-started/) - The web framework used
+* [FireBase](https://firebase.google.com/) - Data Management
+* [AZTRO](https://aztro.readthedocs.io/en/latest/) - API used to generate daily horoscope
+* [The CocktailDB](http://www.thecocktaildb.com/api.php) - Used to generate cocktail images and recipes
+* [Animate CSS](https://daneden.github.io/animate.css/) - Used to generate animations
+* Javascript
+* JQuery
+* Moment JS
+* HTML
+* CSS
 
 ## Version Control
 Our team used git for version control.
@@ -44,9 +44,9 @@ Each team member maintained their own branch on github. We agreed to do a pull r
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 ## Acknowledgements
-*Alex Zhen, Winfred Sunga, Sairam Jalakam, Yolisa Bam
-*Chi Lu, Garret Gruessing & Jerome Chennette
-*Pinterest for all visual inspiration
+* Alex Zhen, Winfred Sunga, Sairam Jalakam, Yolisa Bam
+* Chi Lu, Garret Gruessing & Jerome Chennette
+* Pinterest for all visual inspiration
 
 
 
