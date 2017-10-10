@@ -2,9 +2,25 @@
 var firstName = "";
 var dob = "";
 var age = 0;
+var date = "";
 var cocktail = "";
 var zodiacSign = "";
-var cockTailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/random.php";
+var randomCockTailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/random.php";
+var cocktailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/search.php?s=";
+
+// Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDxOWaxS6ZUOnIYs4e7Zwi19b5lXGcLYXk",
+    authDomain: "utender-5b7e4.firebaseapp.com",
+    databaseURL: "https://utender-5b7e4.firebaseio.com",
+    projectId: "utender-5b7e4",
+    storageBucket: "",
+    messagingSenderId: "47926703729"
+  };
+  firebase.initializeApp(config);
+
+//initialize firebase database
+database = firebase.database();  
 
 //submit button click listener
 $("#startAssesment").on("click", function(){
@@ -21,10 +37,10 @@ $("#startAssesment").on("click", function(){
   dobMoment = moment({month : parseInt(dob.split("-")[1] - 1), day : parseInt(dob.split("-")[2]), year : parseInt(dob.split("-")[0])}).format("MM DD YYYY");
   age = moment().diff(dobMoment, "years");
   
-  console.log("firstName : " + firstName);
-  console.log("dob : " + dob);
-  console.log("dob moment: " + dobMoment);
-  console.log("age : " + age);
+  // console.log("firstName : " + firstName);
+  // console.log("dob : " + dob);
+  // console.log("dob moment: " + dobMoment);
+  // console.log("age : " + age);
 
   //validate if first name was provided
   if (firstName === "") {
@@ -81,7 +97,7 @@ $("#startAssesment").on("click", function(){
 
     //get the zodiac sign based on dob
     zodiacSign = getZodiacSign(dob);
-    console.log(zodiacSign);
+    //console.log(zodiacSign);
 
     //display zodiac sign
     //$("#row1").empty();
@@ -124,6 +140,7 @@ $("#startAssesment").on("click", function(){
       method : "POST",
       url : queryURL
     }).done(function(response){
+      date = response.current_date;
       // console.log(response);
       // console.log(response.description);
       $("#date").text('Date : ' + response.current_date);
@@ -228,7 +245,7 @@ $("#startAssesment").on("click", function(){
     var mmdd = parseMMDD(date);
     mmdd = parseInt(mmdd);
 
-    console.log(mmdd);
+    //console.log(mmdd);
 
     if (mmdd >= 321 && mmdd <= 419) {
       return "Aries";
@@ -279,14 +296,14 @@ function getZodiacImageURL(zodiac) {
 $(document).on("click", ".btn-get-random",function(){
 
   $(".row").empty();  
-  callAjaxForCocktail(cockTailDBURL);
+  callAjaxForCocktail(randomCockTailDBURL);
   //renderElementsForRandomCoctail();
 });
 
 $(document).on("click",".btn-day1",function(){
 
   $(".row").empty();  
-  callAjaxForCocktail(cockTailDBURL);
+  callAjaxForCocktail(randomCockTailDBURL);
 
 });
 
@@ -301,9 +318,10 @@ function callAjaxForCocktail(queryURL){
 
   }).done(function(response){
 
-  //console.log(response);
+  console.log('response : ' + response);
+  console.log('response object : ' + response.drinks[0]);
 
-  //console.log(response.drinks[0].strDrink);
+  console.log('cocktail from response : ' + response.drinks[0].strDrink);
 
   renderElementsForRandomCoctail(response);
 
@@ -314,6 +332,9 @@ function callAjaxForCocktail(queryURL){
 function renderElementsForRandomCoctail(response){
 
     var divContainer = $("<div>");
+
+    //grab the random coctail selected
+    cocktail = response.drinks[0].strDrink;
 
     divContainer.addClass("container");
 
@@ -394,16 +415,16 @@ function renderElementsForRandomCoctail(response){
       var ingredientNumber = "strIngredient" + i;
       var measureNumber = "strMeasure" + i;
 
-      console.log("ingredientNumber : " + ingredientNumber);
-      console.log("measureNumber : " + measureNumber);
+      //console.log("ingredientNumber : " + ingredientNumber);
+      //console.log("measureNumber : " + measureNumber);
 
       var ingredient = response.drinks[0][ingredientNumber];
       var measurement = response.drinks[0][measureNumber];
 
-      console.log("ingredient : " + ingredient);
-      console.log("measurement : " + measurement);
+      //console.log("ingredient : " + ingredient);
+      //console.log("measurement : " + measurement);
 
-      if (response.drinks[0][ingredientNumber] !== "" || response.drinks[0][ingredientNumber] !== null || response.drinks[0][ingredientNumber] !== "null") {
+      if (response.drinks[0][ingredientNumber]) {// !== "" || response.drinks[0][ingredientNumber] !== null || response.drinks[0][ingredientNumber] !== "null") {
         ul.append($("<li>" + measurement + " " + ingredient + "</li>"))
       }
     }
@@ -510,7 +531,7 @@ $(document).on("click", "#cocktail-database", function(){
     // console.log(response.length);
     // console.log(response.drinks[0].strDrinkThumb);
     
-    var cocktail = "";
+    //var cocktail = "";
     var cocktailImageURL = "";
 
     for (var i = 0; i < 15; i++) {
@@ -538,9 +559,20 @@ $(document).on("click", "#cocktail-database", function(){
 
 //add event listener to clicking of cocktail thumbnail
 $(document).on("click", ".img-cocktail-thumbnail", function() {
-  var cocktail = $(this).attr("alt");
+  //var cocktail = $(this).attr("alt");
+  console.log("this is : " + $(this));
+  cocktail = $(this).attr("alt");
 
-  var cockTailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/search.php?s=" + cocktail;
+  cocktailDBURL = cocktailDBURL + cocktail;
 
-  callAjaxForCocktail(cockTailDBURL);
+  callAjaxForCocktail(cocktailDBURL);
 })
+
+//add event listener for pushing data to firebase
+$(document).on("click","#cocktail-firebase", function() {
+  database.ref('users/' + firstName).push({
+    cocktail : cocktail,
+    dateOfBirth : dob, 
+    date : date
+  })
+});
