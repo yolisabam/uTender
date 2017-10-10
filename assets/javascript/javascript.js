@@ -266,7 +266,10 @@ $("#startAssesment").on("click", function(){
         cocktailImageURL = response.drinks[i].strDrinkThumb;
 
         //create a new column
-        var col = $("<div class='col-md-3'></div>");
+        if (i === 0 || i === 4 || i === 8 || i === 12) {
+          var col = $("<div class='col-md-3'></div>");  
+        }
+        
 
         //append the column in the appropriate row
 
