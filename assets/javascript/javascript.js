@@ -226,7 +226,7 @@ $("#startAssesment").on("click", function(){
 
   //listener for load cocktail selection button
   //$(document).on("click", ".btn-cocktail-selection", function(){
-  $(document).on("click", "#btn-random", function(){  
+  $(document).on("click", "#cocktail-database", function(){  
     //empty out the row to be replaced with new stuff
     $(".row").empty();
 
