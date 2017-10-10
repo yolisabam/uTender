@@ -2,9 +2,25 @@
 var firstName = "";
 var dob = "";
 var age = 0;
+var date = "";
 var cocktail = "";
 var zodiacSign = "";
-var cockTailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/random.php";
+var randomCockTailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/random.php";
+var cocktailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/search.php?s=";
+
+// Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDxOWaxS6ZUOnIYs4e7Zwi19b5lXGcLYXk",
+    authDomain: "utender-5b7e4.firebaseapp.com",
+    databaseURL: "https://utender-5b7e4.firebaseio.com",
+    projectId: "utender-5b7e4",
+    storageBucket: "",
+    messagingSenderId: "47926703729"
+  };
+  firebase.initializeApp(config);
+
+//initialize firebase database
+database = firebase.database();  
 
 //submit button click listener
 $("#startAssesment").on("click", function(){
@@ -21,10 +37,10 @@ $("#startAssesment").on("click", function(){
   dobMoment = moment({month : parseInt(dob.split("-")[1] - 1), day : parseInt(dob.split("-")[2]), year : parseInt(dob.split("-")[0])}).format("MM DD YYYY");
   age = moment().diff(dobMoment, "years");
   
-  console.log("firstName : " + firstName);
-  console.log("dob : " + dob);
-  console.log("dob moment: " + dobMoment);
-  console.log("age : " + age);
+  // console.log("firstName : " + firstName);
+  // console.log("dob : " + dob);
+  // console.log("dob moment: " + dobMoment);
+  // console.log("age : " + age);
 
   //validate if first name was provided
   if (firstName === "") {
@@ -74,14 +90,14 @@ $("#startAssesment").on("click", function(){
     $("#div-content").append(col2Row0, col2Row1, col2Row2, col2Row3, col2Row4);
 
     //grab row 1 of col 2 and add 2 cols inside,
-    col1 = $("<div>").addClass("col-md-6").attr('id','row1-col1');
-    col2 = $("<div>").addClass("col-md-6").attr('id','row1-col2');
+    col1 = $("<div>").addClass("col-sm-6").attr('id','row1-col1');
+    col2 = $("<div>").addClass("col-sm-6").attr('id','row1-col2');
 
     $("#row1").append(col1, col2);
 
     //get the zodiac sign based on dob
     zodiacSign = getZodiacSign(dob);
-    console.log(zodiacSign);
+    //console.log(zodiacSign);
 
     //display zodiac sign
     //$("#row1").empty();
@@ -124,6 +140,7 @@ $("#startAssesment").on("click", function(){
       method : "POST",
       url : queryURL
     }).done(function(response){
+      date = response.current_date;
       // console.log(response);
       // console.log(response.description);
       $("#date").text('Date : ' + response.current_date);
@@ -228,7 +245,7 @@ $("#startAssesment").on("click", function(){
     var mmdd = parseMMDD(date);
     mmdd = parseInt(mmdd);
 
-    console.log(mmdd);
+    //console.log(mmdd);
 
     if (mmdd >= 321 && mmdd <= 419) {
       return "Aries";
@@ -279,14 +296,14 @@ function getZodiacImageURL(zodiac) {
 $(document).on("click", ".btn-get-random",function(){
 
   $(".row").empty();  
-  callAjaxForCocktail(cockTailDBURL);
+  callAjaxForCocktail(randomCockTailDBURL);
   //renderElementsForRandomCoctail();
 });
 
-$(document).on("click",".btn-day1",function(){
+$(document).on("click","#another-random-cocktail",function(){
 
   $(".row").empty();  
-  callAjaxForCocktail(cockTailDBURL);
+  callAjaxForCocktail(randomCockTailDBURL);
 
 });
 
@@ -301,9 +318,10 @@ function callAjaxForCocktail(queryURL){
 
   }).done(function(response){
 
-  //console.log(response);
+  console.log('response : ' + response);
+  console.log('response object : ' + response.drinks[0]);
 
-  //console.log(response.drinks[0].strDrink);
+  console.log('cocktail from response : ' + response.drinks[0].strDrink);
 
   renderElementsForRandomCoctail(response);
 
@@ -315,6 +333,9 @@ function renderElementsForRandomCoctail(response){
 
     var divContainer = $("<div>");
 
+    //grab the random coctail selected
+    cocktail = response.drinks[0].strDrink;
+
     divContainer.addClass("container");
 
     var divRow = $("<div>");
@@ -323,7 +344,7 @@ function renderElementsForRandomCoctail(response){
 
     var divImage =  $("<div>");
 
-    divImage.addClass("col-lg-12");
+    divImage.addClass("col-md-12");
 
     imageTag = $("<img>");
     
@@ -347,7 +368,7 @@ function renderElementsForRandomCoctail(response){
 
     var paragraphDivSize = $('<div>');
 
-    paragraphDivSize.addClass("col-lg-12");
+    paragraphDivSize.addClass("col-md-12");
 
     var buttonDiv = $("<div>");
 
@@ -359,11 +380,11 @@ function renderElementsForRandomCoctail(response){
 
     var buttonRowSize = $("<div>");
 
-    buttonRowSize.addClass("col-lg-12").attr("id","col12");
+    buttonRowSize.addClass("col-md-12").attr("id","col12");
 
     var buttonPopulateSize = $("<div>");
 
-    buttonPopulateSize.addClass("col-lg-12").attr("id","col12");
+    buttonPopulateSize.addClass("col-md-12").attr("id","col12");
 
     var heading2 = $("<h2>");
     //var paragraphTag1 = $("<p>");
@@ -387,23 +408,21 @@ function renderElementsForRandomCoctail(response){
     heading2.css("text-decoration","underline");
     heading2.text("Recipe")
 
-    
-
     //put the list together
     for (var i = 1; i <= 15; i++) {
       var ingredientNumber = "strIngredient" + i;
       var measureNumber = "strMeasure" + i;
 
-      console.log("ingredientNumber : " + ingredientNumber);
-      console.log("measureNumber : " + measureNumber);
+      //console.log("ingredientNumber : " + ingredientNumber);
+      //console.log("measureNumber : " + measureNumber);
 
       var ingredient = response.drinks[0][ingredientNumber];
       var measurement = response.drinks[0][measureNumber];
 
-      console.log("ingredient : " + ingredient);
-      console.log("measurement : " + measurement);
+      //console.log("ingredient : " + ingredient);
+      //console.log("measurement : " + measurement);
 
-      if (response.drinks[0][ingredientNumber] !== "" || response.drinks[0][ingredientNumber] !== null || response.drinks[0][ingredientNumber] !== "null") {
+      if (response.drinks[0][ingredientNumber]) {// !== "" || response.drinks[0][ingredientNumber] !== null || response.drinks[0][ingredientNumber] !== "null") {
         ul.append($("<li>" + measurement + " " + ingredient + "</li>"))
       }
     }
@@ -414,7 +433,7 @@ function renderElementsForRandomCoctail(response){
     paragraphTag4.text(response.drinks[0].strInstructions);
 
     var anotherRandomCocktail = $("<button>");
-    anotherRandomCocktail.addClass("btn btn-default btn-day1");
+    anotherRandomCocktail.addClass("btn btn-default btn-random-cocktail");
     anotherRandomCocktail.attr("id", "another-random-cocktail");
     anotherRandomCocktail.attr("type", "submit");
 
@@ -424,7 +443,7 @@ function renderElementsForRandomCoctail(response){
     anotherRandomCocktail.text("Lets generate another random drink");  
 
     var cocktailDataBase = $("<button>");
-    cocktailDataBase.addClass("btn btn-default btn-day2");
+    cocktailDataBase.addClass("btn btn-default btn-cocktail-database");
     cocktailDataBase.attr("id", "cocktail-database");
     cocktailDataBase.attr("type", "submit");
 
@@ -434,12 +453,19 @@ function renderElementsForRandomCoctail(response){
     cocktailDataBase.text("Or pick from random 15");
 
     var addToFireBase = $("<button>");
-    addToFireBase.addClass("btn btn-default btn-day3");
+    addToFireBase.addClass("btn btn-default btn-add-to-firebase");
     addToFireBase.attr("id", "cocktail-firebase");
     addToFireBase.attr("type", "submit");
     addToFireBase.attr("data-text", "Awesome! I will make this drink");
     addToFireBase.text("Awesome! I will make this drink");
-    //paragraph
+    
+    //add drink history button
+    var viewDrinkHistory = $("<button>");
+    viewDrinkHistory.addClass("btn btn-default btn-drink-history");
+    viewDrinkHistory.attr("id", "drink-history");
+    viewDrinkHistory.attr("type", "submit");
+    viewDrinkHistory.attr("data-text", "View your drink history");
+    viewDrinkHistory.text("View your drink history");
 
     divImage.append(imageTag);
     cocktailNameDiv.append(heading1);
@@ -454,7 +480,10 @@ function renderElementsForRandomCoctail(response){
     cocktailNameDiv.append(paragraphTag3);
     cocktailNameDiv.append(paragraphTag4)
     
+    //create a button container 
     cocktailNameDiv.append(buttonDiv);
+
+    //add the buttons 
     buttonDiv.append(buttonRow);
     buttonRow.append(buttonPopulateSize);
     buttonPopulateSize.append(anotherRandomCocktail);
@@ -466,10 +495,15 @@ function renderElementsForRandomCoctail(response){
     buttonDiv.append(buttonRow);
     buttonRow.append(buttonPopulateSize);
     buttonPopulateSize.append(addToFireBase);
-    
+
+    buttonDiv.append(buttonRow);
+    buttonRow.append(buttonPopulateSize);
+    buttonPopulateSize.append(viewDrinkHistory);
+
+    //append the cocktail image into the new row
     divRow.append(divImage);
 
-    divContainer.append(divRow);
+    //divContainer.append(divRow);
 
     //remove the row to be replaced by new stuff
     $(".row").remove();
@@ -485,9 +519,9 @@ $(document).on("click", "#cocktail-database", function(){
   $(".row").empty();
 
   //create the grid
-  var col1 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
-  var col2 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-8").attr("id", "div-content");
-  var col3 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
+  var col1 = $("<div>").addClass("col-sm-2");
+  var col2 = $("<div>").addClass("col-sm-8").attr("id", "div-content");
+  var col3 = $("<div>").addClass("col-sm-2");
 
   //create 4rows inside col2
   col2.append($("<div class='row' id='col2-row1'></div"));
@@ -510,7 +544,7 @@ $(document).on("click", "#cocktail-database", function(){
     // console.log(response.length);
     // console.log(response.drinks[0].strDrinkThumb);
     
-    var cocktail = "";
+    //var cocktail = "";
     var cocktailImageURL = "";
 
     for (var i = 0; i < 15; i++) {
@@ -538,9 +572,92 @@ $(document).on("click", "#cocktail-database", function(){
 
 //add event listener to clicking of cocktail thumbnail
 $(document).on("click", ".img-cocktail-thumbnail", function() {
-  var cocktail = $(this).attr("alt");
+  //var cocktail = $(this).attr("alt");
+  console.log("this is : " + $(this));
+  cocktail = $(this).attr("alt");
 
-  var cockTailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/search.php?s=" + cocktail;
+  cocktailDBURL = cocktailDBURL + cocktail;
 
-  callAjaxForCocktail(cockTailDBURL);
+  callAjaxForCocktail(cocktailDBURL);
 })
+
+//add event listener for pushing data to firebase
+$(document).on("click","#cocktail-firebase", function() {
+  database.ref('users/' + firstName).push({
+    cocktail : cocktail,
+    dateOfBirth : dob, 
+    date : date
+  })
+});
+
+//add event listener for showing drink history
+$(document).on("click","#drink-history", function() {
+  //remove the row div
+  $(".row").remove();
+
+  //create a new row and column
+  var row = $("<div>").addClass("row").attr("id", "row-view-history");
+  var col = $("<div>").addClass("col-sm-12 col-drink-history").attr("id", "drink-history");
+
+  //create a panel
+  var panel = $("<div>").addClass("panel-about");
+  var panelHeading = $("<div>").addClass("panel-heading aboutHead").text("Your Cocktail History");
+  var panelBody = $("<div>").addClass("panel-body main-section");
+
+  //put the rows, columns and panels together
+  panelHeading.append(panelBody);
+  panel.append(panelHeading);
+  col.append(panel);
+  row.append(col);
+
+  //create a table display drink history info
+  var table = $("<table>").addClass("table");
+  var tableRow1 = $("<tr>");
+  var tableHead1 = $("<th>").addClass("table-head").text("User");
+  var tableHead2 = $("<th>").addClass("table-head").text("Date");
+  var tableHead3 = $("<th>").addClass("table-head").text("Cocktail");
+  var tableHead4 = $("<th>").addClass("table-head").text("Rating");
+  
+  
+
+  //put the table structure together
+  tableRow1.append(tableHead1, tableHead2, tableHead3, tableHead4);
+  table.append(tableRow1);
+  //table.append(tableRow12);
+
+  //append table inside panel body
+  panelBody.append(table);
+
+  //finally append eveything inside the container
+  $(".app-container").append(row);
+
+  //display user's cocktail consumption history
+  // database.ref("users/" + firstName).on("value", function(snapshot) {
+    //var sv = snapshot.val();
+    //console.log("snapshot : " + snapshot);
+    //console.log(snapshot.val());
+
+    var tableRow2 = $("<tr>");   
+    var tableData1= "";
+    var tableData2 = "";
+    var tableData3 = "";
+    var tableData4 = "";
+
+    var snapshot = database.ref("users").child();
+    console.log(snapshot)
+
+    // snapshot.forEach(function(childSnapshot) {
+    //   console.log("childSnapshot : " + childSnapshot);
+    //   console.log(childSnapshot.val());
+    //   tableData1 = $("<td>").addClass("table-data").text(firstName);
+    //   tableData2 = $("<td>").addClass("table-data").text(childSnapshot.date);
+    //   tableData3 = $("<td>").addClass("table-data").text(childSnapshot.cocktail);
+    //   tableData4 = $("<td>").addClass("table-data").text(childSnapshot.rating);
+    //   tableRow2.append(tableData1, tableData2, tableData3, tableData4);
+    // });
+
+    
+    // table.append(tableRow2);
+
+  });
+// });
