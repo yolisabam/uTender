@@ -374,7 +374,7 @@ function renderElementsForRandomCoctail(response){
     heading2.text("Recipe")
 
     //put the list together
-    for (var i = 1; i <= 15; i++) {
+    for (var i = 1; i <= 12; i++) {
       var ingredientNumber = "strIngredient" + i;
       var measureNumber = "strMeasure" + i;
 
@@ -400,8 +400,8 @@ function renderElementsForRandomCoctail(response){
     cocktailDataBase.addClass("btn btn-default btn-cocktail-database");
     cocktailDataBase.attr("id", "cocktail-database");
     cocktailDataBase.attr("type", "submit");
-    cocktailDataBase.attr("data-text", "Or pick from random 15");
-    cocktailDataBase.text("Or pick from random 15");
+    cocktailDataBase.attr("data-text", "Or pick from random 12");
+    cocktailDataBase.text("Or pick from random 12");
 
     var addToFireBase = $("<button>");
     addToFireBase.addClass("btn btn-default btn-add-to-firebase");
@@ -476,7 +476,7 @@ function renderElementsForRandomCoctail(response){
     $(".app-container").append(divRow);
 }
 
-//listener for load 15 random cocktails button
+//listener for load 12 random cocktails button
 $(document).on("click", "#cocktail-database", function(){  
   //empty out the row to be replaced with new stuff
   $(".row").empty();
