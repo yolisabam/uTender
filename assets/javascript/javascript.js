@@ -7,6 +7,12 @@ var cocktail = "";
 var zodiacSign = "";
 var randomCockTailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/random.php";
 var cocktailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/search.php?s=";
+var span1 = "";
+var span2 = "";
+var span3 = "";
+var span4 = "";
+var span5 = "";
+var starClicked = "";
 
 // Initialize Firebase
   var config = {
@@ -401,9 +407,24 @@ function renderElementsForRandomCoctail(response){
     addToFireBase.addClass("btn btn-default btn-add-to-firebase");
     addToFireBase.attr("id", "cocktail-firebase");
     addToFireBase.attr("type", "submit");
-    addToFireBase.attr("data-text", "Awesome! I will make this drink");
-    addToFireBase.text("Awesome! I will make this drink");
-    
+    addToFireBase.attr("data-text", "Submit Rating");
+    addToFireBase.text("Submit Rating");
+
+    //add a div that will have a p tag, a 5-star rating, and a submit button
+    var divRating = $("<div>").addClass("div-star-rating").attr("id", "div-5-star-rating");
+    var pRate = $("<p>").text("Rate this drink : ").addClass("text-center");
+    span1 = $("<span>").addClass("glyphicon glyphicon-star-empty star-1 text-center").attr("id", "1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star-empty star-2 text-center").attr("id", "2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star-empty star-3 text-center").attr("id", "3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star-empty star-4 text-center").attr("id", "4-star");
+    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "5-star");
+
+    var starDiv = $("<div>").addClass("div-5-star").attr("id", "div-5-star-container");
+    starDiv.append(span1, span2, span3, span4, span5);
+
+    //put the p tag and submit to firebase button inside the div
+    divRating.append(pRate, starDiv, addToFireBase);
+
     //add drink history button
     var viewDrinkHistory = $("<button>");
     viewDrinkHistory.addClass("btn btn-default btn-drink-history");
@@ -436,7 +457,10 @@ function renderElementsForRandomCoctail(response){
 
     buttonDiv.append(buttonRow);
     buttonRow.append(buttonPopulateSize);
-    buttonPopulateSize.append(addToFireBase);
+    //buttonPopulateSize.append(addToFireBase);
+
+    //append the 5-star rating div inside the main div
+    buttonPopulateSize.append(divRating);
 
     buttonDiv.append(buttonRow);
     buttonRow.append(buttonPopulateSize);
@@ -480,25 +504,27 @@ $(document).on("click", "#cocktail-database", function(){
     var length = response.drinks.length;
     var cocktailImageURL = "";
 
-    for (var i = 0; i < 15; i++) {
+    for (var i = 0; i < 12; i++) {
       //get a random 15 cocktails
       var index = Math.floor(Math.random() * (length));
       cocktail = response.drinks[index].strDrink;
       cocktailImageURL = response.drinks[index].strDrinkThumb;
       
-      var div = $("<div>").addClass("div-random-15");
-      var p = $("<p>").addClass("p-random-15").text(cocktail);
+      var gridDiv = $("<div>").addClass("cocktails-grid").attr("id", "grid-wrapper");
+      var div = $("<div>").addClass("div-random-12 col-md-3").attr("id","cocktail-grid");
+      var p = $("<p>").addClass("p-random-12").text(cocktail);
       var img = $("<img>");
       img.attr("src", cocktailImageURL);
       img.attr("alt", cocktail);
       img.addClass("img-cocktail-thumbnail");
 
       div.append(p, img);
+      gridDiv.append(div);
 
       //insert the div with cocktail & name into its appropriate row
-      if (i < 5) {
+      if (i < 4) {
         $("#col2-row1").append(div);
-      } else if (i >= 5 && i < 10) {
+      } else if (i >= 4 && i < 8) {
         $("#col2-row2").append(div);
       } else {
         $("#col2-row3").append(div);
@@ -523,7 +549,8 @@ $(document).on("click","#cocktail-firebase", function() {
   database.ref('users/' + firstName).push({
     cocktail : cocktail,
     dateOfBirth : dob, 
-    date : date
+    date : date,
+    rating : starClicked
   })
 });
 
@@ -603,6 +630,53 @@ $(document).on("click", "#td-cocktail-name", function(){
 
   callAjaxForCocktail(cocktailDBURL);
 });
+
+//listen for star rating clicks
+$(document).on("click", ".glyphicon-star-empty", function() {
+  starClicked = $(this).attr("id");
+
+  if (starClicked === "star-1") {
+    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star-empty star-2 text-center").attr("id", "2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star-empty star-3 text-center").attr("id", "3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star-empty star-4 text-center").attr("id", "4-star");
+    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "5-star");
+  } else if (starClicked === "star-2") {
+    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star star-2 text-center").attr("id", "2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star-empty star-3 text-center").attr("id", "3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star-empty star-4 text-center").attr("id", "4-star");
+    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "5-star");
+  } else if (starClicked === "star-3") {
+    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star star-2 text-center").attr("id", "2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star star-3 text-center").attr("id", "3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star-empty star-4 text-center").attr("id", "4-star");
+    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "5-star");
+  } else if (starClicked === "star-4") {
+    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star star-2 text-center").attr("id", "2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star star-3 text-center").attr("id", "3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star star-4 text-center").attr("id", "4-star");
+    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "5-star");
+  } else if (starClicked === "star-5") {
+    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star star-2 text-center").attr("id", "2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star star-3 text-center").attr("id", "3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star star-4 text-center").attr("id", "4-star");
+    span5 = $("<span>").addClass("glyphicon glyphicon-star star-5 text-center").attr("id", "5-star");
+  } 
+
+  console.log(starClicked);
+})
+
+// function getDrinkRating() {
+
+
+//   <span class="glyphicon glyphicon-star-empty"></span>
+
+//   glyphicon glyphicon-star
+// }
 
     
    
