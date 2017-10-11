@@ -178,12 +178,7 @@ h3, p {
 #cocktail-database:hover,
 #cocktail-firebase:hover,
 #drink-history:hover,
-#td-cocktail-name:hover,
-#star-1:hover,
-#star-2:hover,
-#star-3:hover,
-#star-4:hover,
-#star-5:hover {
+#td-cocktail-name:hover {
     background-color: #F3CD7D;
 }
 
