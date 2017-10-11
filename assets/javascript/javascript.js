@@ -368,7 +368,7 @@ function renderElementsForRandomCoctail(response){
     heading2.text("Recipe")
 
     //put the list together
-    for (var i = 1; i <= 15; i++) {
+    for (var i = 1; i <= 12; i++) {
       var ingredientNumber = "strIngredient" + i;
       var measureNumber = "strMeasure" + i;
 
@@ -394,8 +394,8 @@ function renderElementsForRandomCoctail(response){
     cocktailDataBase.addClass("btn btn-default btn-cocktail-database");
     cocktailDataBase.attr("id", "cocktail-database");
     cocktailDataBase.attr("type", "submit");
-    cocktailDataBase.attr("data-text", "Or pick from random 15");
-    cocktailDataBase.text("Or pick from random 15");
+    cocktailDataBase.attr("data-text", "Or pick from random 12");
+    cocktailDataBase.text("Or pick from random 12");
 
     var addToFireBase = $("<button>");
     addToFireBase.addClass("btn btn-default btn-add-to-firebase");
@@ -452,7 +452,7 @@ function renderElementsForRandomCoctail(response){
     $(".app-container").append(divRow);
 }
 
-//listener for load 15 random cocktails button
+//listener for load 12 random cocktails button
 $(document).on("click", "#cocktail-database", function(){  
   //empty out the row to be replaced with new stuff
   $(".row").empty();
@@ -480,25 +480,27 @@ $(document).on("click", "#cocktail-database", function(){
     var length = response.drinks.length;
     var cocktailImageURL = "";
 
-    for (var i = 0; i < 15; i++) {
+    for (var i = 0; i < 12; i++) {
       //get a random 15 cocktails
       var index = Math.floor(Math.random() * (length));
       cocktail = response.drinks[index].strDrink;
       cocktailImageURL = response.drinks[index].strDrinkThumb;
-      
-      var div = $("<div>").addClass("div-random-15");
-      var p = $("<p>").addClass("p-random-15").text(cocktail);
+
+      var gridDiv = $("<div>").addClass("cocktails-grid").attr("id", "grid-wrapper")
+      var div = $("<div>").addClass("div-random-12 col-md-3").attr("id" , "cocktail-grid");
+      var p = $("<p>").addClass("p-random-12").text(cocktail);
       var img = $("<img>");
       img.attr("src", cocktailImageURL);
       img.attr("alt", cocktail);
       img.addClass("img-cocktail-thumbnail");
 
       div.append(p, img);
+      gridDiv.append(div);
 
       //insert the div with cocktail & name into its appropriate row
-      if (i < 5) {
+      if (i < 4) {
         $("#col2-row1").append(div);
-      } else if (i >= 5 && i < 10) {
+      } else if (i >= 4 && i < 8) {
         $("#col2-row2").append(div);
       } else {
         $("#col2-row3").append(div);
