@@ -5,8 +5,8 @@ var age = 0;
 var date = "";
 var cocktail = "";
 var zodiacSign = "";
-var randomCockTailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/random.php";
-var cocktailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/search.php?s=";
+var randomCockTailDBURL = "https://www.thecocktaildb.com/api/json/v1/1/random.php";
+var cocktailDBURL = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=";
 var span1 = "";
 var span2 = "";
 var span3 = "";
@@ -272,7 +272,7 @@ $("#startAssesment").on("click", function(){
 
 function getZodiacImageURL(zodiac) {
 
-  var zodiacImageURL = "http://www.astrology-zodiac-signs.com/images/" + zodiac + "-w.png";
+  var zodiacImageURL = "https://www.astrology-zodiac-signs.com/images/" + zodiac + "-w.png";
  
   return zodiacImageURL;
 }
@@ -495,7 +495,7 @@ $(document).on("click", "#cocktail-database", function(){
   $(".row").append(col1, col2, col3);
 
   //ajax get request to get a list of all cocktails
-  queryURL = "http://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail";
+  queryURL = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail";
 
   $.ajax({
     method : "GET",
