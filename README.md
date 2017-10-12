@@ -33,11 +33,45 @@ uTender is currently deployed ot Github. After reading prerequisites,  use [this
 * HTML
 * CSS
 
+## Relevent Code Snippets
+Our motivation was to use the technical tools at our disposal to create a fluid application with two polar APIs. The following snippet of code illustrates how we were able to use the cocktail API to create a list of cocktail ingredients and dynamically display them as an unordered list in the browser.
+```javascript
+//create a list for the ingredients
+var ul = $("<ul>");
+
+var paragraphTag3 = $("<p>");
+var paragraphTag4 = $("<p>");
+
+ul.addClass("text-center");
+paragraphTag3.addClass("text-center");
+paragraphTag4.addClass("text-center");
+heading2.addClass("text-center");
+heading2.css("text-decoration","underline");
+heading2.text("Recipe")
+
+//put the list together
+for (var i = 1; i <= 12; i++) {
+var ingredientNumber = "strIngredient" + i;
+var measureNumber = "strMeasure" + i;
+
+var ingredient = response.drinks[0][ingredientNumber];
+var measurement = response.drinks[0][measureNumber];
+
+if (response.drinks[0][ingredientNumber]) {// !== "" || response.drinks[0][ingredientNumber] !== null || response.drinks[0][ingredientNumber] !== "null") {
+ul.append($("<li>" + measurement + " " + ingredient + "</li>"))
+}
+}
+
+paragraphTag3.text("Mixing Instructions:");
+paragraphTag4.text(response.drinks[0].strInstructions);
+```
 ## Version Control
 Our team used git for version control.
 
 ### Contributing
 Each team member maintained their own branch on github. We agreed to do a pull request to master daily to make sure our branches were up to date. Pull requests were approved only by other members of the team instead of the individual who made it.
+
+
 
 
 ## License
