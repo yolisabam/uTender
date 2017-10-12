@@ -5,8 +5,8 @@ var age = 0;
 var date = "";
 var cocktail = "";
 var zodiacSign = "";
-var randomCockTailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/random.php";
-var cocktailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/search.php?s=";
+var randomCockTailDBURL = "https://www.thecocktaildb.com/api/json/v1/1/random.php";
+var cocktailDBURL = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=";
 var span1 = "";
 var span2 = "";
 var span3 = "";
@@ -272,7 +272,7 @@ $("#startAssesment").on("click", function(){
 
 function getZodiacImageURL(zodiac) {
 
-  var zodiacImageURL = "http://www.astrology-zodiac-signs.com/images/" + zodiac + "-w.png";
+  var zodiacImageURL = "https://www.astrology-zodiac-signs.com/images/" + zodiac + "-w.png";
  
   return zodiacImageURL;
 }
@@ -413,14 +413,14 @@ function renderElementsForRandomCoctail(response){
     //add a div that will have a p tag, a 5-star rating, and a submit button
     var divRating = $("<div>").addClass("div-star-rating").attr("id", "div-5-star-rating");
     var pRate = $("<p>").text("Rate this drink : ").addClass("text-center");
-    span1 = $("<span>").addClass("glyphicon glyphicon-star-empty star-1 text-center").attr("id", "1-star");
-    span2 = $("<span>").addClass("glyphicon glyphicon-star-empty star-2 text-center").attr("id", "2-star");
-    span3 = $("<span>").addClass("glyphicon glyphicon-star-empty star-3 text-center").attr("id", "3-star");
-    span4 = $("<span>").addClass("glyphicon glyphicon-star-empty star-4 text-center").attr("id", "4-star");
-    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "5-star");
+    span1 = $("<span>").addClass("glyphicon glyphicon-star-empty star-1 text-center").attr("id", "star-1").attr("data-value","1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star-empty star-2 text-center").attr("id", "star-2").attr("data-value","2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star-empty star-3 text-center").attr("id", "star-3").attr("data-value","3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star-empty star-4 text-center").attr("id", "star-4").attr("data-value","4-star");
+    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "star-5").attr("data-value","5-star");
 
     var starDiv = $("<div>").addClass("div-5-star").attr("id", "div-5-star-container");
-    starDiv.append(span1, span2, span3, span4, span5);
+    starDiv.append(span1, "  ", span2, "  ", span3, "  ", span4, "  ", span5);
 
     //put the p tag and submit to firebase button inside the div
     divRating.append(pRate, starDiv, addToFireBase);
@@ -495,7 +495,7 @@ $(document).on("click", "#cocktail-database", function(){
   $(".row").append(col1, col2, col3);
 
   //ajax get request to get a list of all cocktails
-  queryURL = "http://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail";
+  queryURL = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail";
 
   $.ajax({
     method : "GET",
@@ -539,9 +539,9 @@ $(document).on("click", "#cocktail-database", function(){
 $(document).on("click", ".img-cocktail-thumbnail", function() {
   
   cocktail = $(this).attr("alt");
-  cocktailDBURL = cocktailDBURL + cocktail;
+  URL = cocktailDBURL + cocktail;
 
-  callAjaxForCocktail(cocktailDBURL);
+  callAjaxForCocktail(URL);
 })
 
 //add event listener for pushing data to firebase
@@ -626,45 +626,64 @@ $(document).on("click", "#td-cocktail-name", function(){
   cocktail = $(this).text();
   //console.log(cocktailName);
 
-  cocktailDBURL = cocktailDBURL + cocktail;
+  URL = cocktailDBURL + cocktail;
 
-  callAjaxForCocktail(cocktailDBURL);
+  callAjaxForCocktail(URL);
 });
 
 //listen for star rating clicks
-$(document).on("click", ".glyphicon-star-empty", function() {
-  starClicked = $(this).attr("id");
+$(document).on("click", ".glyphicon", function() {
+  starClicked = $(this).attr("data-value");
 
   if (starClicked === "1-star") {
-    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "1-star");
-    span2 = $("<span>").addClass("glyphicon glyphicon-star-empty star-2 text-center").attr("id", "2-star");
-    span3 = $("<span>").addClass("glyphicon glyphicon-star-empty star-3 text-center").attr("id", "3-star");
-    span4 = $("<span>").addClass("glyphicon glyphicon-star-empty star-4 text-center").attr("id", "4-star");
-    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "5-star");
+    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "star-1").attr("data-value","1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star-empty star-2 text-center").attr("id", "star-2").attr("data-value","2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star-empty star-3 text-center").attr("id", "star-3").attr("data-value","3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star-empty star-4 text-center").attr("id", "star-4").attr("data-value","4-star");
+    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "star-5").attr("data-value","5-star");
+    
+    $("#div-5-star-container").empty();
+    $("#div-5-star-container").append(span1, "  ", span2, "  " ,span3, "  ", span4, "  ",span5);
+
   } else if (starClicked === "2-star") {
-    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "1-star");
-    span2 = $("<span>").addClass("glyphicon glyphicon-star star-2 text-center").attr("id", "2-star");
-    span3 = $("<span>").addClass("glyphicon glyphicon-star-empty star-3 text-center").attr("id", "3-star");
-    span4 = $("<span>").addClass("glyphicon glyphicon-star-empty star-4 text-center").attr("id", "4-star");
-    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "5-star");
+    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "star-1").attr("data-value","1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star star-2 text-center").attr("id", "star-2").attr("data-value","2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star-empty star-3 text-center").attr("id", "star-3").attr("data-value","3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star-empty star-4 text-center").attr("id", "star-4").attr("data-value","4-star");
+    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "star-5").attr("data-value","5-star");
+    
+    $("#div-5-star-container").empty();
+    $("#div-5-star-container").append(span1, "  ", span2, "  " ,span3, "  ", span4, "  ",span5);
+
   } else if (starClicked === "3-star") {
-    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "1-star");
-    span2 = $("<span>").addClass("glyphicon glyphicon-star star-2 text-center").attr("id", "2-star");
-    span3 = $("<span>").addClass("glyphicon glyphicon-star star-3 text-center").attr("id", "3-star");
-    span4 = $("<span>").addClass("glyphicon glyphicon-star-empty star-4 text-center").attr("id", "4-star");
-    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "5-star");
+    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "star-1").attr("data-value","1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star star-2 text-center").attr("id", "star-2").attr("data-value","2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star star-3 text-center").attr("id", "star-3").attr("data-value","3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star-empty star-4 text-center").attr("id", "star-4").attr("data-value","4-star");
+    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "star-5").attr("data-value","5-star");
+    
+    $("#div-5-star-container").empty();
+    $("#div-5-star-container").append(span1, "  ", span2, "  " ,span3, "  ", span4, "  ",span5);
+
   } else if (starClicked === "4-star") {
-    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "1-star");
-    span2 = $("<span>").addClass("glyphicon glyphicon-star star-2 text-center").attr("id", "2-star");
-    span3 = $("<span>").addClass("glyphicon glyphicon-star star-3 text-center").attr("id", "3-star");
-    span4 = $("<span>").addClass("glyphicon glyphicon-star star-4 text-center").attr("id", "4-star");
-    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "5-star");
+    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "star-1").attr("data-value","1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star star-2 text-center").attr("id", "star-2").attr("data-value","2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star star-3 text-center").attr("id", "star-3").attr("data-value","3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star star-4 text-center").attr("id", "star-4").attr("data-value","4-star");
+    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "star-5").attr("data-value","5-star");
+   
+    $("#div-5-star-container").empty();
+    $("#div-5-star-container").append(span1, "  ", span2, "  " ,span3, "  ", span4, "  ",span5);
+
   } else if (starClicked === "5-star") {
-    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "1-star");
-    span2 = $("<span>").addClass("glyphicon glyphicon-star star-2 text-center").attr("id", "2-star");
-    span3 = $("<span>").addClass("glyphicon glyphicon-star star-3 text-center").attr("id", "3-star");
-    span4 = $("<span>").addClass("glyphicon glyphicon-star star-4 text-center").attr("id", "4-star");
-    span5 = $("<span>").addClass("glyphicon glyphicon-star star-5 text-center").attr("id", "5-star");
+    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "star-1").attr("data-value","1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star star-2 text-center").attr("id", "star-2").attr("data-value","2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star star-3 text-center").attr("id", "star-3").attr("data-value","3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star star-4 text-center").attr("id", "star-4").attr("data-value","4-star");;
+    span5 = $("<span>").addClass("glyphicon glyphicon-star star-5 text-center").attr("id", "star-5").attr("data-value","5-star");
+  
+    $("#div-5-star-container").empty();
+    $("#div-5-star-container").append(span1, "  ", span2, "  " ,span3, "  ", span4, "  ",span5);
   } 
 
   console.log(starClicked);
