@@ -2,9 +2,31 @@
 var firstName = "";
 var dob = "";
 var age = 0;
+var date = "";
 var cocktail = "";
 var zodiacSign = "";
-var cockTailDBURL = "http://www.thecocktaildb.com/api/json/v1/1/random.php";
+var randomCockTailDBURL = "https://www.thecocktaildb.com/api/json/v1/1/random.php";
+var cocktailDBURL = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=";
+var span1 = "";
+var span2 = "";
+var span3 = "";
+var span4 = "";
+var span5 = "";
+var starClicked = "";
+
+// Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDxOWaxS6ZUOnIYs4e7Zwi19b5lXGcLYXk",
+    authDomain: "utender-5b7e4.firebaseapp.com",
+    databaseURL: "https://utender-5b7e4.firebaseio.com",
+    projectId: "utender-5b7e4",
+    storageBucket: "",
+    messagingSenderId: "47926703729"
+  };
+  firebase.initializeApp(config);
+
+//initialize firebase database
+database = firebase.database();  
 
 //submit button click listener
 $("#startAssesment").on("click", function(){
@@ -20,11 +42,6 @@ $("#startAssesment").on("click", function(){
   dob = $("#birth-input").val().trim();
   dobMoment = moment({month : parseInt(dob.split("-")[1] - 1), day : parseInt(dob.split("-")[2]), year : parseInt(dob.split("-")[0])}).format("MM DD YYYY");
   age = moment().diff(dobMoment, "years");
-  
-  console.log("firstName : " + firstName);
-  console.log("dob : " + dob);
-  console.log("dob moment: " + dobMoment);
-  console.log("age : " + age);
 
   //validate if first name was provided
   if (firstName === "") {
@@ -74,21 +91,18 @@ $("#startAssesment").on("click", function(){
     $("#div-content").append(col2Row0, col2Row1, col2Row2, col2Row3, col2Row4);
 
     //grab row 1 of col 2 and add 2 cols inside,
-    col1 = $("<div>").addClass("col-md-6").attr('id','row1-col1');
-    col2 = $("<div>").addClass("col-md-6").attr('id','row1-col2');
+    col1 = $("<div>").addClass("col-sm-6").attr('id','row1-col1');
+    col2 = $("<div>").addClass("col-sm-6").attr('id','row1-col2');
 
     $("#row1").append(col1, col2);
 
     //get the zodiac sign based on dob
     zodiacSign = getZodiacSign(dob);
-    console.log(zodiacSign);
 
     //display zodiac sign
-    //$("#row1").empty();
     $("#row0").append("<h3>Hello " + zodiacSign + "!</h3>");
 
     //display zodiac image
-    //$("#row2").empty();
     var img = $("<img>");
     img.attr("src", getZodiacImageURL(zodiacSign)).attr("alt", zodiacSign + " thumbnail").attr("id", "img-zodiac");
 
@@ -112,8 +126,6 @@ $("#startAssesment").on("click", function(){
     var p6 = $("<p>").attr("id", "lucky-time");
     var p7 = $("<p>").attr("id", "mood");
 
-    //$("#row3").empty();
-    //$("#col2-row3").append(p1, p2, p3, p4, p5, p6, p7);
     $("#row1-col2").append(p1, p2, p3, p5, p6, p7);
     $("#row2").append(p4);
 
@@ -124,8 +136,8 @@ $("#startAssesment").on("click", function(){
       method : "POST",
       url : queryURL
     }).done(function(response){
-      // console.log(response);
-      // console.log(response.description);
+      date = response.current_date;
+
       $("#date").text('Date : ' + response.current_date);
       $("#color").text('Color : ' + response.color);
       $("#compatibility").text('Compatibility : ' + response.compatibility);
@@ -150,7 +162,6 @@ $("#startAssesment").on("click", function(){
     col3Div.addClass("col-xs-4");
     col3Div.attr("id", "col-div-3");
 
-    //$("#row4").empty();
     $("#row4").append(col1Div, col2Div, col3Div);
 
     //create the yesterday button
@@ -191,11 +202,9 @@ $("#startAssesment").on("click", function(){
     btnRandom.addClass("btn btn-default btn-get-random");
     btnRandom.attr("id", "btn-random");
     btnRandom.attr("type", "submit");
-    btnRandom.text("Get A Random Cocktail");
+    btnRandom.text("Get Your Cocktail of the Day");
 
-    // $("#row5").append($("<div class='col-xs-12' id='col-btn-random'>"));
     $("#row4").append(btnRandom);
-
   }
 
   //listener for yesterday, today and tomorrow buttons
@@ -211,8 +220,6 @@ $("#startAssesment").on("click", function(){
       method : "POST",
       url : queryURL
     }).done(function(response){
-      // console.log(response);
-      // console.log(response.description);
       $("#date").text('Date : ' + response.current_date);
       $("#color").text('Color : ' + response.color);
       $("#compatibility").text('Compatibility : ' + response.compatibility);
@@ -221,74 +228,11 @@ $("#startAssesment").on("click", function(){
       $("#lucky-time").text('Lucky Time : ' + response.lucky_time);
       $("#mood").text('Mood : ' + response.mood);
     });
-    //console.log("I clicked : " + day);
-  });
-
-  //listener for load cocktail selection button
-  //$(document).on("click", ".btn-cocktail-selection", function(){
-  $(document).on("click", "#cocktail-database", function(){  
-    //empty out the row to be replaced with new stuff
-    $(".row").empty();
-
-    //create the grid
-    var col1 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
-    var col2 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-8").attr("id", "div-content");
-    var col3 = $("<div>").addClass("col-xs-12 col-sm-12 col-md-2");
-
-    //create 4rows inside col2
-    col2.append($("<div class='row' id='col2-row1'></div"));
-    col2.append($("<div class='row' id='col2-row2'></div"));
-    col2.append($("<div class='row' id='col2-row3'></div"));
-    col2.append($("<div class='row' id='col2-row4'></div"))
-
-    $(".row").append(col1, col2, col3);
-
-    //ajax get request to get a list of all cocktails
-    queryURL = "http://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail";
-
-    $.ajax({
-      method : "GET",
-      url : queryURL
-    }).done(function(response) {
-      var length = response.drinks.length;
-
-      // console.log(response);
-      // console.log(response.length);
-      // console.log(response.drinks[0].strDrinkThumb);
-      
-      var cocktail = "";
-      var cocktailImageURL = "";
-
-      for (var i = 0; i < 16; i++) {
-        //get a random 16 cocktails
-        var index = Math.floor(Math.random * (length));
-        console.log("imageURL " + i + " :" + response.drinks[i].strDrinkThumb);
-        cocktail = response.drinks[i].strDrink;
-        cocktailImageURL = response.drinks[i].strDrinkThumb;
-
-        //create a new column
-        if (i === 0 || i === 4 || i === 8 || i === 12) {
-          var col = $("<div class='col-md-3'></div>");  
-        }
-        
-
-        //append the column in the appropriate row
-
-        var img = $("<img>");
-        img.attr("src", cocktailImageURL);
-        img.attr("alt", cocktail);
-        img.addClass("img-cocktail-thumbnail");
-       $("#div-content").append(img);
-      }
-    });
-
   });
 
   function getZodiacSign(date) {
     var mmdd = parseMMDD(date);
     mmdd = parseInt(mmdd);
-
-    console.log(mmdd);
 
     if (mmdd >= 321 && mmdd <= 419) {
       return "Aries";
@@ -328,7 +272,7 @@ $("#startAssesment").on("click", function(){
 
 function getZodiacImageURL(zodiac) {
 
-  var zodiacImageURL = "http://www.astrology-zodiac-signs.com/images/" + zodiac + "-w.png";
+  var zodiacImageURL = "https://www.astrology-zodiac-signs.com/images/" + zodiac + "-w.png";
  
   return zodiacImageURL;
 }
@@ -337,47 +281,30 @@ function getZodiacImageURL(zodiac) {
 
 
 $(document).on("click", ".btn-get-random",function(){
-
   $(".row").empty();  
-  callAjaxForCocktail();
-  //renderElementsForRandomCoctail();
+  callAjaxForCocktail(randomCockTailDBURL);
 });
 
-$(document).on("click",".btn-day1",function(){
-
+$(document).on("click","#another-random-cocktail",function(){
   $(".row").empty();  
-  callAjaxForCocktail();
-
+  callAjaxForCocktail(randomCockTailDBURL);
 });
 
 
-
-
-function callAjaxForCocktail(){
-
-    $.ajax({
-
-    method:"GET",
-
-    url:cockTailDBURL
-
-    }).done(function(response){
-
-    console.log(response);
-
-    console.log(response.drinks[0].strDrink);
-
+function callAjaxForCocktail(queryURL){
+  $.ajax({
+  method:"GET",
+  url:queryURL
+  }).done(function(response){
     renderElementsForRandomCoctail(response);
-
-    console.log(response.drinks[0].strDrinkThumb);
-
-})
+  });
 }
 
-
 function renderElementsForRandomCoctail(response){
-
     var divContainer = $("<div>");
+
+    //grab the random coctail selected
+    cocktail = response.drinks[0].strDrink;
 
     divContainer.addClass("container");
 
@@ -387,7 +314,7 @@ function renderElementsForRandomCoctail(response){
 
     var divImage =  $("<div>");
 
-    divImage.addClass("col-lg-12");
+    divImage.addClass("col-md-12");
 
     imageTag = $("<img>");
     
@@ -401,7 +328,7 @@ function renderElementsForRandomCoctail(response){
 
     var cocktailNameDiv =   $('<div>');
 
-    var heading1 = $("<h1 class ='text-center'>");
+    var heading1 = $("<h2 class ='text-center'>");
 
     heading1.text(response.drinks[0].strDrink);
 
@@ -411,7 +338,7 @@ function renderElementsForRandomCoctail(response){
 
     var paragraphDivSize = $('<div>');
 
-    paragraphDivSize.addClass("col-lg-12");
+    paragraphDivSize.addClass("col-md-12");
 
     var buttonDiv = $("<div>");
 
@@ -423,63 +350,103 @@ function renderElementsForRandomCoctail(response){
 
     var buttonRowSize = $("<div>");
 
-    buttonRowSize.addClass("col-lg-12").attr("id","col12");
+    buttonRowSize.addClass("col-md-12").attr("id","col12");
 
     var buttonPopulateSize = $("<div>");
 
-    buttonPopulateSize.addClass("col-lg-12").attr("id","col12");
+    buttonPopulateSize.addClass("col-md-12").attr("id","col12");
 
-    var heading2 = $("<h2>");
-    var paragraphTag1 = $("<p>");
-    var paragraphTag2 = $("<p>");
+    var heading2 = $("<h3>");
+    //var paragraphTag1 = $("<p>");
+    //var paragraphTag2 = $("<p>");
+
+    //create a list for the ingredients
+    var ul = $("<ul>");
+
     var paragraphTag3 = $("<p>");
     var paragraphTag4 = $("<p>");
-    paragraphTag1.addClass("text-center");
-    paragraphTag2.addClass("text-center");
+
+    ul.addClass("text-center");
     paragraphTag3.addClass("text-center");
     paragraphTag4.addClass("text-center");
     heading2.addClass("text-center");
     heading2.css("text-decoration","underline");
-    heading2.text("Reciepe")
+    heading2.text("Recipe")
 
-    paragraphTag1.text("The main ingredients are "+response.drinks[0].strIngredient1+" , "+response.drinks[0].strIngredient2+ " and " +response.drinks[0].strIngredient3);
-    paragraphTag2.text("take "+response.drinks[0].strMeasure1+ " of "+response.drinks[0].strIngredient1+ " , "+response.drinks[0].strMeasure2+" of" +response.drinks[0].strIngredient2+" and "+response.drinks[0].strMeasure3+ "of "+response.drinks[0].strIngredient3+".");
-    paragraphTag3.text("How To Make it?");
+    //put the list together
+    for (var i = 1; i <= 12; i++) {
+      var ingredientNumber = "strIngredient" + i;
+      var measureNumber = "strMeasure" + i;
+
+      var ingredient = response.drinks[0][ingredientNumber];
+      var measurement = response.drinks[0][measureNumber];
+
+      if (response.drinks[0][ingredientNumber]) {// !== "" || response.drinks[0][ingredientNumber] !== null || response.drinks[0][ingredientNumber] !== "null") {
+        ul.append($("<li>" + measurement + " " + ingredient + "</li>"))
+      }
+    }
+
+    paragraphTag3.text("Mixing Instructions:");
     paragraphTag4.text(response.drinks[0].strInstructions);
 
     var anotherRandomCocktail = $("<button>");
-    anotherRandomCocktail.addClass("btn btn-default btn-day1");
+    anotherRandomCocktail.addClass("btn btn-default btn-random-cocktail");
     anotherRandomCocktail.attr("id", "another-random-cocktail");
     anotherRandomCocktail.attr("type", "submit");
-    anotherRandomCocktail.attr("data-text", "generate another coctail for you?");
-    anotherRandomCocktail.text("generate another coctail for you?");
+    anotherRandomCocktail.attr("data-text", "Lets generate another random drink");
+    anotherRandomCocktail.text("Lets generate another random drink");  
 
     var cocktailDataBase = $("<button>");
-    cocktailDataBase.addClass("btn btn-default btn-day2");
+    cocktailDataBase.addClass("btn btn-default btn-cocktail-database");
     cocktailDataBase.attr("id", "cocktail-database");
     cocktailDataBase.attr("type", "submit");
-    cocktailDataBase.attr("data-text", "Check out the drinks that suits you");
-    cocktailDataBase.text("Check out the drinks that suits you");
+    cocktailDataBase.attr("data-text", "Or pick from random 12");
+    cocktailDataBase.text("Or pick from random 12");
 
     var addToFireBase = $("<button>");
-    addToFireBase.addClass("btn btn-default btn-day3");
-    addToFireBase.attr("id", "cocktail-database");
+    addToFireBase.addClass("btn btn-default btn-add-to-firebase");
+    addToFireBase.attr("id", "cocktail-firebase");
     addToFireBase.attr("type", "submit");
-    addToFireBase.attr("data-text", "Check out the drinks that suits you");
-    addToFireBase.text("add to firebase");
-    //paragraph
-  
+    addToFireBase.attr("data-text", "Submit Rating");
+    addToFireBase.text("Submit Rating");
+
+    //add a div that will have a p tag, a 5-star rating, and a submit button
+    var divRating = $("<div>").addClass("div-star-rating").attr("id", "div-5-star-rating");
+    var pRate = $("<p>").text("Rate this drink : ").addClass("text-center");
+    span1 = $("<span>").addClass("glyphicon glyphicon-star-empty star-1 text-center").attr("id", "star-1").attr("data-value","1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star-empty star-2 text-center").attr("id", "star-2").attr("data-value","2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star-empty star-3 text-center").attr("id", "star-3").attr("data-value","3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star-empty star-4 text-center").attr("id", "star-4").attr("data-value","4-star");
+    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "star-5").attr("data-value","5-star");
+
+    var starDiv = $("<div>").addClass("div-5-star").attr("id", "div-5-star-container");
+    starDiv.append(span1, "  ", span2, "  ", span3, "  ", span4, "  ", span5);
+
+    //put the p tag and submit to firebase button inside the div
+    divRating.append(pRate, starDiv, addToFireBase);
+
+    //add drink history button
+    var viewDrinkHistory = $("<button>");
+    viewDrinkHistory.addClass("btn btn-default btn-drink-history");
+    viewDrinkHistory.attr("id", "drink-history");
+    viewDrinkHistory.attr("type", "submit");
+    viewDrinkHistory.attr("data-text", "View your drink history");
+    viewDrinkHistory.text("View your drink history");
 
     divImage.append(imageTag);
     cocktailNameDiv.append(heading1);
     divImage.append(cocktailNameDiv);
     cocktailNameDiv.append(heading2);
-    cocktailNameDiv.append(paragraphTag1);
-    cocktailNameDiv.append(paragraphTag2);
+
+    //add the ingredients list
+    cocktailNameDiv.append(ul);
     cocktailNameDiv.append(paragraphTag3);
     cocktailNameDiv.append(paragraphTag4)
     
+    //create a button container 
     cocktailNameDiv.append(buttonDiv);
+
+    //add the buttons 
     buttonDiv.append(buttonRow);
     buttonRow.append(buttonPopulateSize);
     buttonPopulateSize.append(anotherRandomCocktail);
@@ -490,17 +457,245 @@ function renderElementsForRandomCoctail(response){
 
     buttonDiv.append(buttonRow);
     buttonRow.append(buttonPopulateSize);
-    buttonPopulateSize.append(addToFireBase);
-    
+    //buttonPopulateSize.append(addToFireBase);
 
-    
-    
+    //append the 5-star rating div inside the main div
+    buttonPopulateSize.append(divRating);
+
+    buttonDiv.append(buttonRow);
+    buttonRow.append(buttonPopulateSize);
+    buttonPopulateSize.append(viewDrinkHistory);
+
+    //append the cocktail image into the new row
     divRow.append(divImage);
 
-    divContainer.append(divRow);
-    
-    $(".row").append(divContainer);
+    //remove the row to be replaced by new stuff
+    $(".row").remove();
 
-
-
+    //add the new stuff
+    $(".app-container").append(divRow);
 }
+
+//listener for load 12 random cocktails button
+$(document).on("click", "#cocktail-database", function(){  
+  //empty out the row to be replaced with new stuff
+  $(".row").empty();
+
+  //create the grid
+  var col1 = $("<div>").addClass("col-sm-2");
+  var col2 = $("<div>").addClass("col-sm-8").attr("id", "div-content");
+  var col3 = $("<div>").addClass("col-sm-2");
+
+  //create 4rows inside col2
+  col2.append($("<div class='row' id='col2-row1'></div"));
+  col2.append($("<div class='row' id='col2-row2'></div"));
+  col2.append($("<div class='row' id='col2-row3'></div"));
+  //col2.append($("<div class='row' id='col2-row4'></div"))
+
+  $(".row").append(col1, col2, col3);
+
+  //ajax get request to get a list of all cocktails
+  queryURL = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail";
+
+  $.ajax({
+    method : "GET",
+    url : queryURL
+  }).done(function(response) {
+    var length = response.drinks.length;
+    var cocktailImageURL = "";
+
+    for (var i = 0; i < 12; i++) {
+      //get a random 15 cocktails
+      var index = Math.floor(Math.random() * (length));
+      cocktail = response.drinks[index].strDrink;
+      cocktailImageURL = response.drinks[index].strDrinkThumb;
+      
+      var gridDiv = $("<div>").addClass("cocktails-grid").attr("id", "grid-wrapper");
+      var div = $("<div>").addClass("div-random-12 col-md-3").attr("id","cocktail-grid");
+      var p = $("<p>").addClass("p-random-12").text(cocktail);
+      var img = $("<img>");
+      img.attr("src", cocktailImageURL);
+      img.attr("alt", cocktail);
+      img.addClass("img-cocktail-thumbnail");
+
+      div.append(p, img);
+      gridDiv.append(div);
+
+      //insert the div with cocktail & name into its appropriate row
+      if (i < 4) {
+        $("#col2-row1").append(div);
+      } else if (i >= 4 && i < 8) {
+        $("#col2-row2").append(div);
+      } else {
+        $("#col2-row3").append(div);
+      }
+     //$("#div-content").append(div);
+    }
+  });
+
+});
+
+//add event listener to clicking of cocktail thumbnail
+$(document).on("click", ".img-cocktail-thumbnail", function() {
+  
+  cocktail = $(this).attr("alt");
+  URL = cocktailDBURL + cocktail;
+
+  callAjaxForCocktail(URL);
+})
+
+//add event listener for pushing data to firebase
+$(document).on("click","#cocktail-firebase", function() {
+  database.ref('users/' + firstName).push({
+    cocktail : cocktail,
+    dateOfBirth : dob, 
+    date : date,
+    rating : starClicked
+  })
+});
+
+//add event listener for showing drink history
+$(document).on("click","#drink-history", function() {
+
+  var firstNameCap = getfirstNameCap(firstName);
+
+  //remove the row div
+  $(".row").remove();
+
+  //create a new row and column
+  var row = $("<div>").addClass("row").attr("id", "row-view-history");
+  var col = $("<div>").addClass("col-sm-12 col-drink-history").attr("id", "col-drink-history");
+
+  //create a panel
+  var panel = $("<div>").addClass("panel-about");
+  var panelHeading = $("<div>").addClass("panel-heading aboutHead").text(firstNameCap + ", Here's Your Cocktail History");
+  var panelBody = $("<div>").addClass("panel-body main-section");
+
+  //put the rows, columns and panels together
+  panelHeading.append(panelBody);
+  panel.append(panelHeading);
+  col.append(panel);
+  row.append(col);
+
+  //create a table display drink history info
+  var table = $("<table>").addClass("table");
+  var tableRow1 = $("<tr>");
+  //var tableHead1 = $("<th>").addClass("table-head").text("User");
+  var tableHead1 = $("<th>").addClass("table-head").text("Date");
+  var tableHead2 = $("<th>").addClass("table-head").text("Cocktail");
+  var tableHead3 = $("<th>").addClass("table-head").text("Rating");
+
+  //put the table structure together
+  tableRow1.append(tableHead1, tableHead2, tableHead3);
+  table.append(tableRow1);
+
+  //append table inside panel body
+  panelBody.append(table);
+
+  //finally append eveything inside the container
+  $(".app-container").append(row);
+
+  //display user's cocktail consumption history
+  var tableRow2 = ""; //$("<tr>");   
+  var tableData1= "";
+  var tableData2 = "";
+  var tableData3 = "";
+
+  database.ref('users/' + firstName + "/").on("value", function(snapshot) {
+    var data = snapshot.val();
+
+    for (var key in data) {
+      tableRow2 = $("<tr>");
+
+      tableData1 = $("<td>").addClass("table-data table-data-date").attr("id","id-td-date").text(data[key].date);
+      tableData2 = $("<td>").addClass("table-data table-data-cocktail").attr("id","td-cocktail-name").text(data[key].cocktail);
+      tableData3 = $("<td>").addClass("table-data table-data-rating").attr("id","id.rating").text(data[key].rating);
+
+      tableRow2.append(tableData1, tableData2, tableData3);
+      table.append(tableRow2);
+    }
+  });
+    
+});
+
+function getfirstNameCap(firstName) {
+  return firstName.split('')[0].toUpperCase() + firstName.split('').slice(1, firstName.length).join('').toLowerCase();
+}
+
+$(document).on("click", "#td-cocktail-name", function(){
+  cocktail = $(this).text();
+  //console.log(cocktailName);
+
+  URL = cocktailDBURL + cocktail;
+
+  callAjaxForCocktail(URL);
+});
+
+//listen for star rating clicks
+$(document).on("click", ".glyphicon", function() {
+  starClicked = $(this).attr("data-value");
+
+  if (starClicked === "1-star") {
+    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "star-1").attr("data-value","1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star-empty star-2 text-center").attr("id", "star-2").attr("data-value","2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star-empty star-3 text-center").attr("id", "star-3").attr("data-value","3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star-empty star-4 text-center").attr("id", "star-4").attr("data-value","4-star");
+    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "star-5").attr("data-value","5-star");
+    
+    $("#div-5-star-container").empty();
+    $("#div-5-star-container").append(span1, "  ", span2, "  " ,span3, "  ", span4, "  ",span5);
+
+  } else if (starClicked === "2-star") {
+    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "star-1").attr("data-value","1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star star-2 text-center").attr("id", "star-2").attr("data-value","2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star-empty star-3 text-center").attr("id", "star-3").attr("data-value","3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star-empty star-4 text-center").attr("id", "star-4").attr("data-value","4-star");
+    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "star-5").attr("data-value","5-star");
+    
+    $("#div-5-star-container").empty();
+    $("#div-5-star-container").append(span1, "  ", span2, "  " ,span3, "  ", span4, "  ",span5);
+
+  } else if (starClicked === "3-star") {
+    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "star-1").attr("data-value","1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star star-2 text-center").attr("id", "star-2").attr("data-value","2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star star-3 text-center").attr("id", "star-3").attr("data-value","3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star-empty star-4 text-center").attr("id", "star-4").attr("data-value","4-star");
+    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "star-5").attr("data-value","5-star");
+    
+    $("#div-5-star-container").empty();
+    $("#div-5-star-container").append(span1, "  ", span2, "  " ,span3, "  ", span4, "  ",span5);
+
+  } else if (starClicked === "4-star") {
+    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "star-1").attr("data-value","1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star star-2 text-center").attr("id", "star-2").attr("data-value","2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star star-3 text-center").attr("id", "star-3").attr("data-value","3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star star-4 text-center").attr("id", "star-4").attr("data-value","4-star");
+    span5 = $("<span>").addClass("glyphicon glyphicon-star-empty star-5 text-center").attr("id", "star-5").attr("data-value","5-star");
+   
+    $("#div-5-star-container").empty();
+    $("#div-5-star-container").append(span1, "  ", span2, "  " ,span3, "  ", span4, "  ",span5);
+
+  } else if (starClicked === "5-star") {
+    span1 = $("<span>").addClass("glyphicon glyphicon-star star-1 text-center").attr("id", "star-1").attr("data-value","1-star");
+    span2 = $("<span>").addClass("glyphicon glyphicon-star star-2 text-center").attr("id", "star-2").attr("data-value","2-star");
+    span3 = $("<span>").addClass("glyphicon glyphicon-star star-3 text-center").attr("id", "star-3").attr("data-value","3-star");
+    span4 = $("<span>").addClass("glyphicon glyphicon-star star-4 text-center").attr("id", "star-4").attr("data-value","4-star");;
+    span5 = $("<span>").addClass("glyphicon glyphicon-star star-5 text-center").attr("id", "star-5").attr("data-value","5-star");
+  
+    $("#div-5-star-container").empty();
+    $("#div-5-star-container").append(span1, "  ", span2, "  " ,span3, "  ", span4, "  ",span5);
+  } 
+
+  console.log(starClicked);
+})
+
+// function getDrinkRating() {
+
+
+//   <span class="glyphicon glyphicon-star-empty"></span>
+
+//   glyphicon glyphicon-star
+// }
+
+    
+   
