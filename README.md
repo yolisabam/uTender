@@ -2,7 +2,7 @@
 
 ### Overview
 
-Discover a new way to choose cockatils you love next time you're at happy hour, on a date or at a work event. uTender is brand new application that lets you pick alcoholic beverages based on your daily horoscope.
+Discover a new way to choose cocktails you love next time you're at happy hour, on a date or at a work event. uTender is brand new application that lets you pick alcoholic beverages based on your daily horoscope.
 
 ## Getting Started
 uTender is currently deployed ot Github. After reading prerequisites,  use [this link](https://yolisabam.github.io/uTender/.) to get started.
